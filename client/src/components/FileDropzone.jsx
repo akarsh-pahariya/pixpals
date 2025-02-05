@@ -4,7 +4,7 @@ import { useDropzone } from 'react-dropzone';
 const FileDropzone = ({ setFiles }) => {
   const onDrop = useCallback(
     (acceptedFiles) => {
-      setFiles((prevFiles) => [...prevFiles, ...acceptedFiles]); // Append new files
+      setFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
     },
     [setFiles]
   );
@@ -17,15 +17,21 @@ const FileDropzone = ({ setFiles }) => {
   return (
     <div
       {...getRootProps()}
-      className="p-6 border-2 border-dashed rounded-lg cursor-pointer bg-gray-900 text-white border-gray-600 hover:border-blue-500 transition-all duration-300"
+      className={`p-8 border-2 border-dashed rounded-xl cursor-pointer bg-[#141414] transition-all duration-300 ${
+        isDragActive
+          ? 'border-[#7C3AED]'
+          : 'border-[#2A2A2A] hover:border-[#6D28D9]'
+      }`}
     >
       <input {...getInputProps()} />
       {isDragActive ? (
-        <p className="text-blue-400 font-semibold">Drop the files here...</p>
+        <p className="text-[#7C3AED] text-center font-medium">
+          Drop your images here...
+        </p>
       ) : (
-        <p className="text-gray-300">
-          Drag & drop some files here, or{' '}
-          <span className="text-blue-400 font-semibold">click to select</span>
+        <p className="text-gray-400 text-center">
+          Drag & drop images here, or{' '}
+          <span className="text-[#7C3AED] font-medium">browse files</span>
         </p>
       )}
     </div>
