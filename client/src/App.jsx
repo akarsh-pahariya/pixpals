@@ -1,9 +1,9 @@
-import FileUpload from './components/FileUpload';
+import Body from './Body';
 
 const App = () => {
   return (
     <div>
-      <FileUpload />
+      <Body />
     </div>
   );
 };
