@@ -6,7 +6,7 @@ import useImageUpload from '../hooks/useImageUpload';
 
 const FileUpload = () => {
   const [files, setFiles] = useState([]);
-  const { uploadImages } = useImageUpload();
+  const { uploadImages, percentage, response, error } = useImageUpload();
 
   return (
     <div className="max-w-3xl w-full mx-auto p-8 bg-[#1C1C1C] rounded-2xl shadow-2xl border border-[#2A2A2A]">
@@ -23,7 +23,7 @@ const FileUpload = () => {
         )}
       </div>
 
-      {files.length > 0 && (
+      {files.length > 0 && percentage === 0 && (
         <button
           onClick={() => uploadImages(files)}
           className="mt-6 w-full bg-[#6D28D9] hover:bg-[#7C3AED] text-white font-medium py-3 px-4 rounded-xl transition-all duration-200 ease-in-out"
@@ -32,7 +32,7 @@ const FileUpload = () => {
         </button>
       )}
 
-      <FileUploadProgressBar />
+      {percentage > 0 && <FileUploadProgressBar percentage={percentage} />}
     </div>
   );
 };
