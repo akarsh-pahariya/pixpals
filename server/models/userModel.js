@@ -50,6 +50,15 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+userSchema.methods.toJSON = function () {
+  const user = this.toObject();
+  user.id = user._id;
+  delete user.password;
+  delete user.__v;
+  delete user._id;
+  return user;
+};
+
 userSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(this.password, 10);
   this.confirmPassword = undefined;
@@ -57,8 +66,8 @@ userSchema.pre('save', async function (next) {
 });
 
 userSchema.methods.verifyPassword = async function (
-  hashedPassword,
-  candidatePassword
+  candidatePassword,
+  hashedPassword
 ) {
   const result = await bcrypt.compare(candidatePassword, hashedPassword);
   return result;
