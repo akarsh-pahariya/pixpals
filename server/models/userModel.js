@@ -1,0 +1,68 @@
+const mongoose = require('mongoose');
+const validator = require('validator');
+const bcrypt = require('bcrypt');
+
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, 'Name is required'],
+      minLength: [3, 'Name must be at least 3 characters long'],
+      maxLength: [20, 'Name must be at most 20 characters long'],
+    },
+    username: {
+      type: String,
+      unique: [true, 'Username is already taken'],
+      required: [true, 'Username is required'],
+      minLength: [3, 'Username must be at least 3 characters long'],
+      maxLength: [20, 'Username must be at most 20 characters long'],
+    },
+    password: {
+      type: String,
+      required: [true, 'Password is required'],
+      minLength: [8, 'Password must be at least 8 characters long'],
+      maxLength: [20, 'Password must be at most 20 characters long'],
+    },
+    confirmPassword: {
+      type: 'String',
+      required: [true, 'Confirm Password is a required field'],
+      validate: {
+        validator: function (confirmPassword) {
+          return this.password === confirmPassword;
+        },
+        message: 'Password and Confirm password do not match',
+      },
+    },
+    recoveryEmail: {
+      type: String,
+      unique: [true, 'Email is already taken'],
+      sparse: true,
+      validate: {
+        validator: function (recoveryEmail) {
+          if (recoveryEmail === '') return true;
+          return validator.isEmail(recoveryEmail);
+        },
+        message: 'Please provide a valid email',
+      },
+      maxLength: [50, 'Email must be at most 50 characters long'],
+    },
+  },
+  { timestamps: true }
+);
+
+userSchema.pre('save', async function (next) {
+  this.password = await bcrypt.hash(this.password, 10);
+  this.confirmPassword = undefined;
+  next();
+});
+
+userSchema.methods.verifyPassword = async function (
+  hashedPassword,
+  candidatePassword
+) {
+  const result = await bcrypt.compare(candidatePassword, hashedPassword);
+  return result;
+};
+
+const User = mongoose.model('User', userSchema);
+module.exports = User;

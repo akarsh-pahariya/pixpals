@@ -9,10 +9,9 @@ const multerFilter = (req, file, cb) => {
   }
 };
 const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
-const uploadImages = upload.array('images', 5);
+const uploadImages = upload.array('images', 10);
 
 const groupImages = async (req, res) => {
-  console.log(req.files);
   res.status(200).json({ message: 'Group images' });
 };
 
