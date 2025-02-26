@@ -3,9 +3,7 @@ const User = require('../models/userModel');
 const AppError = require('../utils/appError');
 
 const createToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN,
-  });
+  return jwt.sign({ id }, process.env.JWT_SECRET);
 };
 
 const login = async (req, res, next) => {
@@ -24,6 +22,12 @@ const login = async (req, res, next) => {
       return next(new AppError('Incorrect username or password', 401));
     }
 
+    const token = createToken(user.id);
+    res.cookie('jwt', token, {
+      secure: true,
+      httpOnly: true,
+    });
+
     res.status(200).json({
       status: 'success',
       data: {
@@ -39,6 +43,12 @@ const register = async (req, res, next) => {
   try {
     const newUser = await User.create(req.body);
     const user = newUser.toJSON();
+
+    const token = createToken(user.id);
+    res.cookie('jwt', token, {
+      secure: true,
+      httpOnly: true,
+    });
 
     res.status(201).json({
       status: 'success',

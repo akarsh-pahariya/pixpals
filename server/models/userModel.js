@@ -33,13 +33,12 @@ const userSchema = new mongoose.Schema(
         message: 'Password and Confirm password do not match',
       },
     },
-    recoveryEmail: {
+    email: {
       type: String,
       unique: [true, 'Email is already taken'],
-      sparse: true,
+      required: [true, 'Email is required'],
       validate: {
         validator: function (recoveryEmail) {
-          if (recoveryEmail === '') return true;
           return validator.isEmail(recoveryEmail);
         },
         message: 'Please provide a valid email',
