@@ -1,14 +1,13 @@
-import Body from './components/Body';
-import Footer from './components/Footer';
-import Header from './components/Header';
+import { Provider } from 'react-redux';
+import appStore from './store/appStore';
+import { RouterProvider } from 'react-router-dom';
+import appRouter from './router/appRouter';
 
 const App = () => {
   return (
-    <div className="flex flex-col min-h-screen">
-      <Header />
-      <Body />
-      <Footer />
-    </div>
+    <Provider store={appStore}>
+      <RouterProvider router={appRouter} />
+    </Provider>
   );
 };
 

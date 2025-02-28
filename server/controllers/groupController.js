@@ -12,12 +12,16 @@ const addMembersToGroup = async (group, members) => {
 
     const eligibleUserIds = eligibleUsers.map((user) => user._id);
 
-    if (eligibleUserIds.length > 0) {
-      await User.updateMany(
-        { _id: { $in: eligibleUserIds } },
-        { $push: { pendingRequests: group.id } }
+    if (eligibleUserIds.length <= 0) {
+      throw new Error(
+        'Either the users are already in the group or are invited'
       );
     }
+
+    await User.updateMany(
+      { _id: { $in: eligibleUserIds } },
+      { $push: { pendingRequests: group.id } }
+    );
   } catch (error) {
     throw new Error(
       'Failed to send invitation to the users to join the group. Please try again.'
@@ -29,7 +33,6 @@ const inviteMembersToGroup = async (req, res, next) => {
   try {
     const groupId = req.params.groupId;
     const members = req.body.members;
-    console.log(groupId, members);
 
     const group = await Group.findById(groupId);
     if (!req.user.adminGroups.includes(groupId)) {
@@ -38,7 +41,7 @@ const inviteMembersToGroup = async (req, res, next) => {
       );
     }
 
-    addMembersToGroup(group, members);
+    await addMembersToGroup(group, members);
     res
       .status(201)
       .json({ status: 'success', message: 'Invitation sent successfully' });
