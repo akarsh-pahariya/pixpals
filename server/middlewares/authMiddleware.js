@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
+const AppError = require('../utils/appError');
 
 const protect = async (req, res, next) => {
   try {
@@ -30,4 +31,4 @@ const protect = async (req, res, next) => {
   }
 };
 
-module.exports = protect;
+module.exports = { protect };

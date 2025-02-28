@@ -38,13 +38,31 @@ const userSchema = new mongoose.Schema(
       unique: [true, 'Email is already taken'],
       required: [true, 'Email is required'],
       validate: {
-        validator: function (recoveryEmail) {
-          return validator.isEmail(recoveryEmail);
+        validator: function (email) {
+          return validator.isEmail(email);
         },
         message: 'Please provide a valid email',
       },
       maxLength: [50, 'Email must be at most 50 characters long'],
     },
+    memberGroups: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Group',
+      },
+    ],
+    adminGroups: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Group',
+      },
+    ],
+    pendingRequests: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Group',
+      },
+    ],
   },
   { timestamps: true }
 );
