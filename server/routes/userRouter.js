@@ -5,7 +5,8 @@ const { declineGroupInvite } = require('../controllers/userController');
 
 const Router = express.Router();
 
-Router.route('/').get(login).post(register);
+Router.route('/login').post(login);
+Router.route('/register').post(register);
 Router.route('/group/:groupId/decline-invite').delete(
   protect,
   declineGroupInvite
