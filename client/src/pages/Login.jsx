@@ -5,13 +5,14 @@ import { loginUser } from '../services/authService';
 import { showErrorToast, showSuccessToast } from '../components/ui/Toast';
 import Spinner from '../components/ui/Spinner';
 import { addUserInfo } from '../store/slices/userSlice';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -21,6 +22,7 @@ const Login = () => {
       const userData = await loginUser(username, password);
       dispatch(addUserInfo(userData.data.user));
       showSuccessToast('Login Successful !!');
+      navigate('/dashboard');
     } catch (error) {
       showErrorToast(error.message);
     }

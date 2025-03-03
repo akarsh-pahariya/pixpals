@@ -6,14 +6,6 @@ const groupSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Group name is required'],
     },
-    members: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        min: [1, 'Group must have at least one member'],
-        required: [true, 'At least 1 member in the group is required'],
-      },
-    ],
     admin: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',

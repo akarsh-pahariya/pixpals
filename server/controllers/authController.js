@@ -26,6 +26,7 @@ const login = async (req, res, next) => {
     res.cookie('jwt', token, {
       secure: true,
       httpOnly: true,
+      sameSite: 'None',
     });
 
     res.status(200).json({
@@ -48,6 +49,7 @@ const register = async (req, res, next) => {
     res.cookie('jwt', token, {
       secure: true,
       httpOnly: true,
+      sameSite: 'None',
     });
 
     res.status(201).json({
@@ -61,4 +63,17 @@ const register = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login };
+const verifyUser = async (req, res, next) => {
+  try {
+    res.status(201).json({
+      status: 'success',
+      data: {
+        user: req.user,
+      },
+    });
+  } catch (error) {
+    next(new AppError(error.message, 400));
+  }
+};
+
+module.exports = { register, login, verifyUser };

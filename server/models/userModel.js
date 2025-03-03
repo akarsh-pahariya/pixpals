@@ -45,18 +45,6 @@ const userSchema = new mongoose.Schema(
       },
       maxLength: [50, 'Email must be at most 50 characters long'],
     },
-    memberGroups: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Group',
-      },
-    ],
-    adminGroups: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Group',
-      },
-    ],
     pendingRequests: [
       {
         type: mongoose.Schema.Types.ObjectId,

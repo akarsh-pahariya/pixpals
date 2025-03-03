@@ -1,7 +1,7 @@
-import { HashLoader } from 'react-spinners';
+import { ClipLoader } from 'react-spinners';
 
 const Spinner = () => {
-  return <HashLoader color="#df0000" loading size={58} speedMultiplier={1} />;
+  return <ClipLoader color="#be0202" loading size={48} />;
 };
 
 export default Spinner;

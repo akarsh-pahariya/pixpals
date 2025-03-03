@@ -1,16 +1,22 @@
 const Group = require('../models/groupModel');
 const User = require('../models/userModel');
 const AppError = require('../utils/appError');
+const UserGroupMembership = require('../models/userGroupMembershipModel');
 
-const addMembersToGroup = async (group, members) => {
+const addMembersToGroup = async (currentGroupId, members) => {
   try {
-    const eligibleUsers = await User.find({
-      _id: { $in: members },
-      pendingRequests: { $ne: group.id },
-      _id: { $nin: group.members },
+    const userIds = await User.find({
+      username: { $in: members },
     }).select('_id');
+    const userIdsArray = userIds.map((user) => user._id);
 
-    const eligibleUserIds = eligibleUsers.map((user) => user._id);
+    const removingExistingUserIds = await UserGroupMembership.find({
+      userId: { $nin: userIdsArray },
+      groupId: { $in: currentGroupId },
+    }).select(userId);
+    const removingExistingUserIdsArray = removingExistingUserIds.map(
+      (member) => member.userId
+    );
 
     if (eligibleUserIds.length <= 0) {
       throw new Error(
@@ -84,16 +90,16 @@ const createGroup = async (req, res, next) => {
   try {
     const groupDetails = {
       name: req.body.name,
-      members: req.user.id,
       admin: req.user.id,
     };
-
     const group = await Group.create(groupDetails);
-    const user = await User.findByIdAndUpdate(
-      req.user.id,
-      { $push: { memberGroups: group.id, adminGroups: group.id } },
-      { new: true }
-    );
+
+    const userGroupMembershipDetails = {
+      userId: req.user.id,
+      groupId: group._id,
+      role: admin,
+    };
+    await UserGroupMembership.create(userGroupMembershipDetails);
     addMembersToGroup(group, req.body.members);
 
     res.status(201).json({
@@ -108,4 +114,19 @@ const createGroup = async (req, res, next) => {
   }
 };
 
-module.exports = { createGroup, inviteMembersToGroup, acceptGroupInvitation };
+const getGroupDetails = async (req, res, next) => {
+  try {
+    const groupIds = req.body.groupIds;
+    console.log(groupIds);
+    res.status(200).json({ status: 'success' });
+  } catch (error) {
+    return next(new AppError(error.message, 400));
+  }
+};
+
+module.exports = {
+  getGroupDetails,
+  createGroup,
+  inviteMembersToGroup,
+  acceptGroupInvitation,
+};

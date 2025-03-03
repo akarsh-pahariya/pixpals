@@ -5,7 +5,7 @@ import { showErrorToast, showSuccessToast } from '../components/ui/Toast';
 import Spinner from '../components/ui/Spinner';
 import { addUserInfo } from '../store/slices/userSlice';
 import { registerUser } from '../services/authService';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const [name, setName] = useState(null);
@@ -15,6 +15,7 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState(null);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -30,6 +31,7 @@ const Register = () => {
       });
       dispatch(addUserInfo(userData.data.user));
       showSuccessToast('Registration Successful !!');
+      navigate('/dashboard');
     } catch (error) {
       showErrorToast(error.message);
     }
