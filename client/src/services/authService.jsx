@@ -47,7 +47,7 @@ export const authenticateUser = async () => {
       withCredentials: true,
     });
 
-    return response.data.data.user;
+    return response.data;
   } catch (error) {
     if (error.response) {
       throw new Error(

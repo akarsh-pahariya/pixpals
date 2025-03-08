@@ -1,10 +1,10 @@
 const express = require('express');
 const { protect } = require('../middlewares/authMiddleware');
 const {
-  declineGroupInvitation,
-  acceptGroupInvitation,
   inviteMembersToGroup,
-} = require('../controllers/groupController');
+  acceptGroupInvitation,
+  declineGroupInvitation,
+} = require('../controllers/invitationController');
 
 const Router = express.Router();
 

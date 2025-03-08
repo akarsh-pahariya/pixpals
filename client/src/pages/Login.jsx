@@ -6,8 +6,10 @@ import { showErrorToast, showSuccessToast } from '../components/ui/Toast';
 import Spinner from '../components/ui/Spinner';
 import { addUserInfo } from '../store/slices/userSlice';
 import { Link, useNavigate } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
 
 const Login = () => {
+  const { isLoading } = useAuth();
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -28,6 +30,8 @@ const Login = () => {
     }
     setLoading(false);
   };
+
+  if (isLoading) return <Spinner />;
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center px-4">

@@ -1,10 +1,7 @@
 const express = require('express');
 const {
   createGroup,
-  inviteMembersToGroup,
-  acceptGroupInvitation,
   getGroupDetails,
-  declineGroupInvitation,
 } = require('../controllers/groupController');
 const { protect } = require('../middlewares/authMiddleware');
 
