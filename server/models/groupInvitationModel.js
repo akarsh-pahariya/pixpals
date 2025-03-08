@@ -22,5 +22,8 @@ const groupInvitationSchema = new mongoose.Schema({
   },
 });
 
-const GroupInviation = mongoose.model('GroupInvitation', groupInvitationSchema);
-module.exports = GroupInviation;
+const GroupInvitation = mongoose.model(
+  'GroupInvitation',
+  groupInvitationSchema
+);
+module.exports = GroupInvitation;

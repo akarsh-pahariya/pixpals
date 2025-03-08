@@ -19,6 +19,10 @@ const userGroupMembershipSchema = new mongoose.Schema({
     enum: ['member', 'admin'],
     default: 'member',
   },
+  joinedAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 const UserGroupMembership = mongoose.model(

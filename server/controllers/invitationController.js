@@ -1,8 +1,7 @@
-const Group = require('../models/groupModel');
-const User = require('../models/userModel');
-const AppError = require('../utils/appError');
-const UserGroupMembership = require('../models/userGroupMembershipModel');
 const GroupInvitation = require('../models/groupInvitationModel');
+const Group = require('../models/groupModel');
+const UserGroupMembership = require('../models/userGroupMembershipModel');
+const AppError = require('../utils/appError');
 const { addMembersToGroup } = require('../utils/invitationUtils');
 
 const inviteMembersToGroup = async (req, res, next) => {
@@ -80,47 +79,8 @@ const acceptGroupInvitation = async (req, res, next) => {
   }
 };
 
-const createGroup = async (req, res, next) => {
-  try {
-    const groupDetails = {
-      name: req.body.name,
-      admin: req.user.id,
-    };
-    const group = await Group.create(groupDetails);
-
-    const userGroupMembershipDetails = {
-      userId: req.user.id,
-      groupId: group._id,
-      role: 'admin',
-    };
-    await UserGroupMembership.create(userGroupMembershipDetails);
-    await addMembersToGroup(group._id, req.body.members, req.user.id);
-
-    res.status(201).json({
-      status: 'success',
-      data: {
-        group,
-      },
-    });
-  } catch (error) {
-    return next(new AppError(error.message, 400));
-  }
-};
-
-const getGroupDetails = async (req, res, next) => {
-  try {
-    const groupIds = req.body.groupIds;
-    console.log(groupIds);
-    res.status(200).json({ status: 'success' });
-  } catch (error) {
-    return next(new AppError(error.message, 400));
-  }
-};
-
 module.exports = {
-  getGroupDetails,
-  createGroup,
-  inviteMembersToGroup,
   acceptGroupInvitation,
   declineGroupInvitation,
+  inviteMembersToGroup,
 };
