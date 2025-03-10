@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import { loginUser } from '../services/authService';
 import { showErrorToast, showSuccessToast } from '../components/ui/Toast';
@@ -7,18 +7,22 @@ import Spinner from '../components/ui/Spinner';
 import { addUserInfo } from '../store/slices/userSlice';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
+import {
+  setIsLoadingToFalse,
+  setIsLoadingToTrue,
+} from '../store/slices/loadingSlice';
 
 const Login = () => {
-  const { isLoading } = useAuth();
+  useAuth();
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const loading = useSelector((state) => state.loading.isLoading);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    dispatch(setIsLoadingToTrue());
 
     try {
       const userData = await loginUser(username, password);
@@ -28,10 +32,8 @@ const Login = () => {
     } catch (error) {
       showErrorToast(error.message);
     }
-    setLoading(false);
+    dispatch(setIsLoadingToFalse());
   };
-
-  if (isLoading) return <Spinner />;
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center px-4">
