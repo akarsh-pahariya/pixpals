@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { authenticateUser } from '../services/authService';
-import { addUserInfo } from '../store/slices/userSlice';
+import { addUserInfo, setAuthChecked } from '../store/slices/userSlice';
 import {
   setIsLoadingToFalse,
   setIsLoadingToTrue,
@@ -13,7 +13,8 @@ const useAuth = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.userInfo);
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  const authChecked = useSelector((state) => state.user.authChecked);
 
   useEffect(() => {
     const checkUserAuthentication = async () => {
@@ -31,14 +32,17 @@ const useAuth = () => {
         console.log('User not authenticated', error);
         if (location.pathname !== '/login') {
           navigate('/login');
-          showErrorToast(`Login to access the ${location.pathname} route`);
+          showErrorToast(
+            `Please login to get access to the ${location.pathname} route`
+          );
         }
       }
       dispatch(setIsLoadingToFalse());
+      dispatch(setAuthChecked(true));
     };
 
-    if (!user) checkUserAuthentication();
-  }, [dispatch, navigate, user, location]);
+    if (!isLoggedIn && !authChecked) checkUserAuthentication();
+  }, [dispatch, navigate, isLoggedIn, location, authChecked]);
 };
 
 export default useAuth;

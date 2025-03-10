@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import { showErrorToast, showSuccessToast } from '../components/ui/Toast';
 import Spinner from '../components/ui/Spinner';
-import { addUserInfo } from '../store/slices/userSlice';
+import { addUserInfo, setAuthChecked } from '../store/slices/userSlice';
 import { registerUser } from '../services/authService';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -30,6 +30,7 @@ const Register = () => {
         confirmPassword,
       });
       dispatch(addUserInfo(userData.data.user));
+      dispatch(setAuthChecked(true));
       showSuccessToast('Registration Successful !!');
       navigate('/dashboard');
     } catch (error) {
