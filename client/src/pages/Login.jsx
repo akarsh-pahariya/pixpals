@@ -11,11 +11,12 @@ import {
   setIsLoadingToFalse,
   setIsLoadingToTrue,
 } from '../store/slices/loadingSlice';
+import { LogIn } from 'lucide-react';
 
 const Login = () => {
   useAuth();
-  const [username, setUsername] = useState(null);
-  const [password, setPassword] = useState(null);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const loading = useSelector((state) => state.loading.isLoading);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const Login = () => {
       const userData = await loginUser(username, password);
       dispatch(addUserInfo(userData.data.user));
       dispatch(setAuthChecked(true));
-      showSuccessToast('Login Successful !!');
+      showSuccessToast('Login Successful!');
       navigate('/dashboard');
     } catch (error) {
       showErrorToast(error.message);
@@ -37,21 +38,20 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center px-4">
-      <div className="max-w-md w-full space-y-6 p-6 bg-gray-900 rounded-lg shadow-xl">
-        <div>
-          <h2 className="text-center text-2xl font-bold text-white">
-            Welcome Back
-          </h2>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-black px-4">
+      <div className="max-w-md w-full p-8 bg-gray-950 bg-opacity-90 shadow-xl rounded-2xl backdrop-blur-md border border-gray-800">
+        <div className="text-center mb-6">
+          <h2 className="text-3xl font-bold text-white">Welcome to PixPals</h2>
+          <p className="text-gray-400 text-sm">Log in to continue</p>
         </div>
-        <form className="space-y-4" onSubmit={handleLogin}>
+        <form className="space-y-6" onSubmit={handleLogin}>
           <div>
             <label className="block text-sm font-medium text-gray-400">
               Username
             </label>
             <input
-              className="appearance-none block w-full px-3 py-2 border border-gray-700 placeholder-gray-500 text-white rounded-md focus:outline-none focus:ring-red-500 focus:border-red-500 bg-gray-800"
-              placeholder="Username"
+              className="w-full px-4 py-3 mt-1 bg-gray-800 text-white border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+              placeholder="Enter your username"
               onChange={(e) => setUsername(e.target.value)}
             />
           </div>
@@ -60,24 +60,25 @@ const Login = () => {
               Password
             </label>
             <input
-              className="appearance-none block w-full px-3 py-2 border border-gray-700 placeholder-gray-500 text-white rounded-md focus:outline-none focus:ring-red-500 focus:border-red-500 bg-gray-800"
+              className="w-full px-4 py-3 mt-1 bg-gray-800 text-white border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
               type="password"
-              placeholder="Password"
+              placeholder="Enter your password"
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <div>
-            <button
-              type="submit"
-              className="w-full py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200"
-            >
-              Login
-            </button>
-          </div>
+          <button
+            type="submit"
+            className="w-full flex items-center justify-center gap-2 py-3 px-4 text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-500 focus:ring-2 focus:ring-blue-500 transition-all"
+          >
+            <LogIn className="w-5 h-5" /> Login
+          </button>
         </form>
-        <div className="text-center text-sm text-gray-400">
+        <div className="text-center text-sm text-gray-400 mt-4">
           Dont have an account?{' '}
-          <Link to="/register" className="text-red-500 hover:text-red-400">
+          <Link
+            to="/register"
+            className="text-blue-500 hover:text-blue-400 transition-all"
+          >
             Register
           </Link>
         </div>

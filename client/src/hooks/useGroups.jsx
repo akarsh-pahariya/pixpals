@@ -8,7 +8,7 @@ import { fetchGroupsList } from '../services/groupService';
 import { addGroupList } from '../store/slices/groupSlice';
 import { showErrorToast } from '../components/ui/Toast';
 
-const useGroups = () => {
+const useGroups = (refreshTrigger = 0) => {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((store) => store.user.isLoggedIn);
 
@@ -31,7 +31,7 @@ const useGroups = () => {
 
       getGroupsList();
     }
-  }, [dispatch, isLoggedIn]);
+  }, [dispatch, isLoggedIn, refreshTrigger]);
 };
 
 export default useGroups;

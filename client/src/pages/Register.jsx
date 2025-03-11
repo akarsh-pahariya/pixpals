@@ -1,34 +1,39 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import { showErrorToast, showSuccessToast } from '../components/ui/Toast';
 import Spinner from '../components/ui/Spinner';
 import { addUserInfo, setAuthChecked } from '../store/slices/userSlice';
 import { registerUser } from '../services/authService';
 import { Link, useNavigate } from 'react-router-dom';
+import { UserPlus } from 'lucide-react';
+import {
+  setIsLoadingToFalse,
+  setIsLoadingToTrue,
+} from '../store/slices/loadingSlice';
 
 const Register = () => {
-  const [name, setName] = useState(null);
-  const [username, setUsername] = useState(null);
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
-  const [confirmPassword, setConfirmPassword] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const loading = useSelector((store) => store.loading.isLoading);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    dispatch(setIsLoadingToTrue());
+
+    if (password !== confirmPassword) {
+      showErrorToast('Passwords do not match!');
+      dispatch(setIsLoadingToFalse());
+      return;
+    }
 
     try {
-      const userData = await registerUser({
-        name,
-        username,
-        email,
-        password,
-        confirmPassword,
-      });
+      const userData = await registerUser({ name, username, email, password });
       dispatch(addUserInfo(userData.data.user));
       dispatch(setAuthChecked(true));
       showSuccessToast('Registration Successful !!');
@@ -36,25 +41,27 @@ const Register = () => {
     } catch (error) {
       showErrorToast(error.message);
     }
-    setLoading(false);
+    dispatch(setIsLoadingToFalse());
   };
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center px-4">
-      <div className="max-w-md w-full space-y-6 p-6 bg-gray-900 rounded-lg shadow-xl">
-        <div>
-          <h2 className="text-center text-2xl font-bold text-white">
-            Create an Account
-          </h2>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-black px-4">
+      <div className="max-w-md w-full p-8 bg-gray-950 bg-opacity-90 shadow-xl rounded-2xl backdrop-blur-md border border-gray-800">
+        <div className="text-center mb-6">
+          <h2 className="text-3xl font-bold text-white">Join PixPals</h2>
+          <p className="text-gray-400 text-sm">
+            Create an account to get started
+          </p>
         </div>
-        <form className="space-y-4" onSubmit={handleRegister}>
+        <form className="space-y-6" onSubmit={handleRegister}>
           <div>
             <label className="block text-sm font-medium text-gray-400">
               Name
             </label>
             <input
-              className="appearance-none block w-full px-3 py-2 border border-gray-700 placeholder-gray-500 text-white rounded-md focus:outline-none focus:ring-red-500 focus:border-red-500 bg-gray-800"
-              placeholder="Name"
+              className="w-full px-4 py-3 mt-1 bg-gray-800 text-white border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+              placeholder="Enter your name"
+              value={name}
               onChange={(e) => setName(e.target.value)}
             />
           </div>
@@ -63,8 +70,9 @@ const Register = () => {
               Username
             </label>
             <input
-              className="appearance-none block w-full px-3 py-2 border border-gray-700 placeholder-gray-500 text-white rounded-md focus:outline-none focus:ring-red-500 focus:border-red-500 bg-gray-800"
-              placeholder="Username"
+              className="w-full px-4 py-3 mt-1 bg-gray-800 text-white border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+              placeholder="Enter your username"
+              value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
           </div>
@@ -73,8 +81,10 @@ const Register = () => {
               Email
             </label>
             <input
-              className="appearance-none block w-full px-3 py-2 border border-gray-700 placeholder-gray-500 text-white rounded-md focus:outline-none focus:ring-red-500 focus:border-red-500 bg-gray-800"
-              placeholder="Email"
+              className="w-full px-4 py-3 mt-1 bg-gray-800 text-white border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+              placeholder="Enter your email"
+              type="email"
+              value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
@@ -83,9 +93,10 @@ const Register = () => {
               Password
             </label>
             <input
-              className="appearance-none block w-full px-3 py-2 border border-gray-700 placeholder-gray-500 text-white rounded-md focus:outline-none focus:ring-red-500 focus:border-red-500 bg-gray-800"
+              className="w-full px-4 py-3 mt-1 bg-gray-800 text-white border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
               type="password"
-              placeholder="Password"
+              placeholder="Enter your password"
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
@@ -94,24 +105,26 @@ const Register = () => {
               Confirm Password
             </label>
             <input
-              className="appearance-none block w-full px-3 py-2 border border-gray-700 placeholder-gray-500 text-white rounded-md focus:outline-none focus:ring-red-500 focus:border-red-500 bg-gray-800"
+              className="w-full px-4 py-3 mt-1 bg-gray-800 text-white border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
               type="password"
-              placeholder="Confirm Password"
+              placeholder="Confirm your password"
+              value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </div>
-          <div>
-            <button
-              type="submit"
-              className="w-full py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200"
-            >
-              Register
-            </button>
-          </div>
+          <button
+            type="submit"
+            className="w-full flex items-center justify-center gap-2 py-3 px-4 text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-500 focus:ring-2 focus:ring-blue-500 transition-all"
+          >
+            <UserPlus className="w-5 h-5" /> Register
+          </button>
         </form>
-        <div className="text-center text-sm text-gray-400">
+        <div className="text-center text-sm text-gray-400 mt-4">
           Already have an account?{' '}
-          <Link to="/login" className="text-red-500 hover:text-red-400">
+          <Link
+            to="/login"
+            className="text-blue-500 hover:text-blue-400 transition-all"
+          >
             Login
           </Link>
         </div>
