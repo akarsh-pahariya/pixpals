@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ToastContainer } from 'react-toastify';
 import { loginUser } from '../services/authService';
 import { showErrorToast, showSuccessToast } from '../components/ui/Toast';
 import Spinner from '../components/ui/Spinner';
@@ -82,7 +81,6 @@ const Login = () => {
             Register
           </Link>
         </div>
-        <ToastContainer />
         {loading && <Spinner />}
       </div>
     </div>

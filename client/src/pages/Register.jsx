@@ -33,7 +33,13 @@ const Register = () => {
     }
 
     try {
-      const userData = await registerUser({ name, username, email, password });
+      const userData = await registerUser({
+        name,
+        username,
+        email,
+        password,
+        confirmPassword,
+      });
       dispatch(addUserInfo(userData.data.user));
       dispatch(setAuthChecked(true));
       showSuccessToast('Registration Successful !!');
