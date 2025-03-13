@@ -3,6 +3,8 @@ import MainLayout from '../layout/MainLayout';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import Dashboard from '../pages/Dashboard';
+import GroupDetails from '../pages/GroupDetails';
+import Home from '../pages/Home';
 
 const appRouter = createBrowserRouter([
   {
@@ -11,17 +13,22 @@ const appRouter = createBrowserRouter([
     children: [
       {
         path: '/',
+        element: <Home />,
       },
       {
-        path: '/dashboard',
+        path: 'dashboard',
         element: <Dashboard />,
       },
       {
-        path: '/login',
+        path: 'group/:groupId',
+        element: <GroupDetails />,
+      },
+      {
+        path: 'login',
         element: <Login />,
       },
       {
-        path: '/register',
+        path: 'register',
         element: <Register />,
       },
     ],

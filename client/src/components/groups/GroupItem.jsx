@@ -14,7 +14,7 @@ const GroupItem = ({ group }) => {
           </p>
         </div>
         <Link
-          to={`/groups/${group.id}`}
+          to={`/group/${group.id}`}
           className="ml-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition-all"
         >
           View

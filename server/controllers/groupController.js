@@ -34,21 +34,19 @@ const createGroup = async (req, res, next) => {
 const getGroupDetails = async (req, res, next) => {
   try {
     const userId = req.user._id;
-    const joinedGroups = await UserGroupMembership.find({ userId }).select(
-      'groupId'
-    );
 
-    const groupIds = joinedGroups.map((joinedGroup) => joinedGroup.groupId);
-    const groupsInfo = await Group.find({ _id: { $in: groupIds } });
+    const joinedGroups = await UserGroupMembership.find({ userId })
+      .populate('groupId', '-__v')
+      .select('groupId');
+
+    const groupsInfo = joinedGroups.map((membership) => membership.groupId);
 
     res.status(200).json({
       status: 'success',
-      data: {
-        groups: groupsInfo,
-      },
+      data: { groups: groupsInfo },
     });
   } catch (error) {
-    return next(new AppError(error.message, 400));
+    return next(new AppError(error.message, 500));
   }
 };
 

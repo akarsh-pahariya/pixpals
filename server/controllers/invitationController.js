@@ -84,36 +84,16 @@ const getInvitations = async (req, res, next) => {
   try {
     const userID = req.user._id;
 
-    const invitations = await GroupInvitation.find({ recieverId: userID });
-
-    const groupIds = invitations.map((invitation) => invitation.groupId);
-    const senderIds = invitations.map((invitation) => invitation.senderId);
-
-    const groups = await Group.find({ _id: { $in: groupIds } }).select(
-      '_id name'
-    );
-    const senders = await User.find({ _id: { $in: senderIds } }).select(
-      '_id username'
-    );
-
-    const groupMap = new Map(
-      groups.map((group) => [
-        group._id.toString(),
-        { id: group._id, name: group.name },
-      ])
-    );
-    const senderMap = new Map(
-      senders.map((sender) => [sender._id.toString(), sender.username])
-    );
+    const invitations = await GroupInvitation.find({ recieverId: userID })
+      .populate('groupId', '_id name')
+      .populate('senderId', '_id username');
 
     const formattedInvitations = invitations.map((invitation) => ({
       id: invitation._id,
-      group: groupMap.get(invitation.groupId.toString()) || {
-        id: null,
-        name: 'Unknown Group',
-      },
-      senderUsername:
-        senderMap.get(invitation.senderId.toString()) || 'Unknown User',
+      group: invitation.groupId
+        ? { id: invitation.groupId._id, name: invitation.groupId.name }
+        : { id: null, name: 'Unknown Group' },
+      senderUsername: invitation.senderId?.username || 'Unknown User',
       invitationDate: invitation.createdAt,
     }));
 
