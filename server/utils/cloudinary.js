@@ -1,5 +1,6 @@
 const fs = require('fs');
 const cloudinary = require('cloudinary');
+const AppError = require('./appError');
 
 cloudinary.v2.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -7,21 +8,34 @@ cloudinary.v2.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const uploadOnCloudinary = async (localFilePath) => {
+const uploadGroupImage = async (localFilePath, groupId) => {
   try {
-    if (!localFilePath) return null;
+    if (!localFilePath) {
+      throw new AppError('No file path provided for upload', 400);
+    }
 
-    const response = await cloudinary.v2.uploader.upload(localFilePath, {
+    if (!groupId) {
+      throw new AppError('Group ID is required for uploading images', 400);
+    }
+
+    const response = await cloudinary.uploader.upload(localFilePath, {
+      folder: `group_uploads/${groupId}`,
       resource_type: 'auto',
     });
 
-    console.log('File has been uploaded successfully');
-    console.log(response.url);
+    fs.unlinkSync(localFilePath);
+
     return response;
   } catch (error) {
-    fs.unlinkSync(localFilePath); //Remove the locally saved temporary file as the upload got failed
-    return null;
+    if (localFilePath && fs.existsSync(localFilePath)) {
+      fs.unlinkSync(localFilePath);
+    }
+
+    throw new AppError(
+      error.message || 'Error uploading image to Cloudinary',
+      500
+    );
   }
 };
 
-module.exports = { uploadOnCloudinary };
+module.exports = { uploadGroupImage };

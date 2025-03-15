@@ -1,25 +1,33 @@
 const multer = require('multer');
-const path = require('path');
+const AppError = require('../utils/appError'); // Import AppError
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, '../public/temp'));
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
-  },
-});
+const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
-  if (file.mimetype.startsWith('image/')) cb(null, true);
-  else cb(new Error('Only Image files are allowed'));
+  const allowedFormats = [
+    'image/jpeg',
+    'image/png',
+    'image/webp',
+    'image/heif',
+  ];
+
+  if (allowedFormats.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(
+      new AppError(
+        'Invalid file type. Only JPEG, PNG, WebP, and HEIF are allowed.',
+        400
+      ),
+      false
+    );
+  }
 };
 
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 },
+  limits: { fileSize: 1 * 1024 * 1024, files: 10 },
 });
 
 module.exports = { upload };
