@@ -5,6 +5,7 @@ import Register from '../pages/Register';
 import Dashboard from '../pages/Dashboard';
 import GroupDetails from '../pages/GroupDetails';
 import Home from '../pages/Home';
+import User from '../pages/User';
 
 const appRouter = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const appRouter = createBrowserRouter([
       {
         path: 'register',
         element: <Register />,
+      },
+      {
+        path: '/user',
+        element: <User />,
       },
     ],
   },

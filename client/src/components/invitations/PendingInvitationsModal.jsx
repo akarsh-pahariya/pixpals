@@ -10,7 +10,6 @@ const PendingInvitationsModal = ({
 }) => {
   if (!isOpen) return null;
 
-  // Close modal only when clicking the backdrop, NOT inside the modal
   const handleBackdropClick = (e) => {
     if (e.target.id === 'modal-backdrop') {
       onClose();
@@ -23,12 +22,11 @@ const PendingInvitationsModal = ({
       className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4"
       onClick={handleBackdropClick}
     >
-      {/* Radial Gradient Overlay for Effect */}
       <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_25%_25%,#FF00FF,transparent_55%),radial-gradient(circle_at_75%_75%,#00FFFF,transparent_55%)]"></div>
 
       <div
         className="bg-gray-900 border border-gray-800 p-6 rounded-xl shadow-2xl w-full max-w-md text-white backdrop-blur-sm bg-opacity-80 relative z-10"
-        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
+        onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400">

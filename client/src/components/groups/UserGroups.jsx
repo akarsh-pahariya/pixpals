@@ -4,23 +4,21 @@ import GroupList from './GroupList';
 const UserGroups = () => {
   const groups = useSelector((state) => state.group.groupsList);
 
-  if (!groups || groups.length === 0) {
-    return (
-      <div className="p-6 bg-gray-950 bg-opacity-90 rounded-2xl shadow-xl border border-gray-800 backdrop-blur-md">
-        <h2 className="text-xl font-semibold text-white mb-4">My Groups</h2>
-        <p className="text-gray-400">You havent joined any groups yet.</p>
-      </div>
-    );
-  }
-
   return (
-    <div className="p-6 bg-gray-950 bg-opacity-90 rounded-2xl shadow-xl border border-gray-800 backdrop-blur-md">
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold text-white">
-          My Groups ({groups.length})
-        </h2>
-      </div>
-      <GroupList groups={groups} />
+    <div className="p-6 bg-gray-900 bg-opacity-80 rounded-xl shadow-lg border border-gray-700 backdrop-blur-md">
+      {/* Section Header */}
+      <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-300 mb-4">
+        My Groups {groups?.length > 0 ? `(${groups.length})` : ''}
+      </h2>
+
+      {/* Content */}
+      {!groups || groups.length === 0 ? (
+        <p className="text-gray-400 text-sm">
+          You haven't joined any groups yet.
+        </p>
+      ) : (
+        <GroupList groups={groups} />
+      )}
     </div>
   );
 };

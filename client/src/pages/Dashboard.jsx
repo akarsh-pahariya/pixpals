@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Spinner from '../components/ui/Spinner';
 import useAuth from '../hooks/useAuth';
 import useGroups from '../hooks/useGroups';
-import UserGroups from '../components/groups/userGroups';
+import UserGroups from '../components/groups/UserGroups';
 import CreateGroupModal from '../components/groups/CreateGroupModal';
 import { createGroup } from '../services/groupService';
 import {
