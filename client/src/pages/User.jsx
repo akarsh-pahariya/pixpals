@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ArrowLeft, Edit, LogOut } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ProfileHeader from '../components/profile/ProfileHeader';
 import ProfilePhoto from '../components/profile/ProfilePhoto';
 import ProfileForm from '../components/profile/ProfileForm';
@@ -9,6 +9,13 @@ import ProfileTimestamps from '../components/profile/ProfileTimestamps';
 import PasswordChangeModal from '../components/profile/PasswordChangeModal';
 import useAuth from '../hooks/useAuth';
 import Spinner from '../components/ui/Spinner';
+import { showErrorToast, showSuccessToast } from '../components/ui/Toast';
+import { updateUserInfo } from '../services/userService';
+import {
+  setIsLoadingToFalse,
+  setIsLoadingToTrue,
+} from '../store/slices/loadingSlice';
+import { addUserInfo } from '../store/slices/userSlice';
 
 const User = () => {
   useAuth();
@@ -18,6 +25,8 @@ const User = () => {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [formData, setFormData] = useState(null);
   const [photoPreview, setPhotoPreview] = useState(null);
+  const [photoFile, setPhotoFile] = useState(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (user) {
@@ -25,9 +34,8 @@ const User = () => {
         username: user.username,
         name: user.name,
         email: user.email,
-        profilePhoto: user.profilePhoto,
       });
-      setPhotoPreview(user.profilePhoto);
+      setPhotoPreview(user.profilePhoto.url);
     }
   }, [user]);
 
@@ -39,18 +47,38 @@ const User = () => {
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPhotoPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+      const previewUrl = URL.createObjectURL(file);
+      setPhotoPreview(previewUrl);
+      setPhotoFile(file);
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Updated user data:', formData);
+    dispatch(setIsLoadingToTrue());
+    try {
+      const updatedFormData = new FormData();
+      Object.keys(formData).forEach((key) => {
+        updatedFormData.append(key, formData[key]);
+      });
+
+      if (photoFile) {
+        updatedFormData.append('profilePhoto', photoFile);
+      }
+
+      const result = await updateUserInfo(updatedFormData);
+      if (photoFile) {
+        URL.revokeObjectURL(photoPreview);
+        setPhotoFile(null);
+      }
+      dispatch(addUserInfo(result.data));
+      showSuccessToast('User Info updated successfully');
+    } catch (error) {
+      dispatch(addUserInfo({ ...user }));
+      showErrorToast(error.message);
+    }
     setIsEditing(false);
+    dispatch(setIsLoadingToFalse());
   };
 
   const handlePasswordSubmit = (passwordData) => {
@@ -66,6 +94,14 @@ const User = () => {
   const handleLogout = () => {
     console.log('Logging out...');
   };
+
+  useEffect(() => {
+    return () => {
+      if (photoPreview && photoPreview.startsWith('blob:')) {
+        URL.revokeObjectURL(photoPreview);
+      }
+    };
+  }, [photoPreview]);
 
   if (loading || !user) return <Spinner />;
 
@@ -129,7 +165,10 @@ const User = () => {
               handleChange={handleChange}
               handleSubmit={handleSubmit}
               setIsEditing={setIsEditing}
-              showPasswordModal={() => setShowPasswordModal(true)}
+              setFormData={setFormData}
+              setPhotoPreview={setPhotoPreview}
+              showPasswordModal={() => setShowPasswordModal(false)}
+              photoFile={photoFile} // Pass the file to the form if needed
             />
           </div>
         </div>

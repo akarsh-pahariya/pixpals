@@ -21,7 +21,11 @@ const handleImageUpload = async (req, res, next) => {
         }
 
         const uniqueName = `${Date.now()}-${uuidv4()}.jpeg`;
-        const outputPath = path.join(__dirname, '../public/temp', uniqueName);
+        const outputPath = path.join(
+          __dirname,
+          '../public/temp/group_uploads',
+          uniqueName
+        );
 
         await sharp(file.buffer)
           .rotate()

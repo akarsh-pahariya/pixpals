@@ -19,7 +19,6 @@ const uploadGroupImage = async (localFilePath, groupId) => {
     }
 
     const response = await cloudinary.uploader.upload(localFilePath, {
-      folder: `group_uploads/${groupId}`,
       resource_type: 'auto',
     });
 
@@ -38,4 +37,40 @@ const uploadGroupImage = async (localFilePath, groupId) => {
   }
 };
 
-module.exports = { uploadGroupImage };
+const uploadUserProfilePhoto = async (localFilePath, userId, publicId) => {
+  try {
+    if (!localFilePath) {
+      throw new AppError('No file path provided for upload', 400);
+    }
+
+    if (!userId) {
+      throw new AppError(
+        'User ID is required for uploading profile photos',
+        400
+      );
+    }
+
+    if (publicId) {
+      await cloudinary.uploader.destroy(publicId);
+    }
+
+    const response = await cloudinary.uploader.upload(localFilePath, {
+      resource_type: 'auto',
+    });
+
+    fs.unlinkSync(localFilePath);
+
+    return response;
+  } catch (error) {
+    if (localFilePath && fs.existsSync(localFilePath)) {
+      fs.unlinkSync(localFilePath);
+    }
+
+    throw new AppError(
+      error.message || 'Error uploading user profile photo to Cloudinary',
+      500
+    );
+  }
+};
+
+module.exports = { uploadGroupImage, uploadUserProfilePhoto };

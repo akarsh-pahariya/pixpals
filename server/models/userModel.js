@@ -45,6 +45,17 @@ const userSchema = new mongoose.Schema(
       },
       maxLength: [50, 'Email must be at most 50 characters long'],
     },
+    profilePhoto: {
+      url: {
+        type: String,
+        default:
+          'https://res.cloudinary.com/dnnj53pqf/image/upload/v1742311705/hxv9tux88h0ny6giapmf_Square_rdlfwf.jpg',
+      },
+      publicId: {
+        type: String,
+        default: 'hxv9tux88h0ny6giapmf_Square_rdlfwf',
+      },
+    },
   },
   { timestamps: true }
 );

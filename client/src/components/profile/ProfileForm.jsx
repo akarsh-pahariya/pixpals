@@ -10,7 +10,19 @@ const ProfileForm = ({
   handleSubmit,
   setIsEditing,
   showPasswordModal,
+  setFormData,
+  setPhotoPreview,
 }) => {
+  const resetForm = () => {
+    setFormData({
+      username: user.username,
+      name: user.name,
+      email: user.email,
+    });
+    setPhotoPreview(user.profilePhoto.url);
+    setIsEditing(false);
+  };
+
   return (
     <form onSubmit={handleSubmit}>
       <div className="space-y-6">
@@ -91,9 +103,7 @@ const ProfileForm = ({
           <div className="flex justify-end space-x-4 mt-4">
             <button
               type="button"
-              onClick={() => {
-                setIsEditing(false);
-              }}
+              onClick={resetForm}
               className="px-5 py-3 rounded-lg text-gray-300 bg-gray-800 hover:bg-gray-700 transition-colors"
             >
               Cancel
