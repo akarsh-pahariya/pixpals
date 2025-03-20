@@ -168,7 +168,7 @@ const User = () => {
               setFormData={setFormData}
               setPhotoPreview={setPhotoPreview}
               showPasswordModal={() => setShowPasswordModal(false)}
-              photoFile={photoFile} // Pass the file to the form if needed
+              photoFile={photoFile}
             />
           </div>
         </div>
