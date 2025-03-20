@@ -169,6 +169,7 @@ const User = () => {
               setPhotoPreview={setPhotoPreview}
               showPasswordModal={() => setShowPasswordModal(false)}
               photoFile={photoFile}
+              setPhotoFile={setPhotoFile}
             />
           </div>
         </div>

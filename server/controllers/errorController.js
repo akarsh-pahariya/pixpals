@@ -5,8 +5,6 @@ const globalErrorHandler = (err, req, res, next) => {
   // Check for Multer errors
   if (err instanceof multer.MulterError) {
     let message = 'File upload error';
-    console.log(err.code);
-
     if (err.code === 'LIMIT_FILE_COUNT') {
       message = 'You can upload a maximum of 10 images.';
     } else if (err.code === 'LIMIT_FILE_SIZE') {

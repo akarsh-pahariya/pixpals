@@ -12,6 +12,7 @@ const ProfileForm = ({
   showPasswordModal,
   setFormData,
   setPhotoPreview,
+  setPhotFile,
 }) => {
   const resetForm = () => {
     setFormData({
@@ -21,6 +22,7 @@ const ProfileForm = ({
     });
     setPhotoPreview(user.profilePhoto.url);
     setIsEditing(false);
+    setPhotFile(null);
   };
 
   return (
