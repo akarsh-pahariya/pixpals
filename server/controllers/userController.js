@@ -1,9 +1,13 @@
 const path = require('path');
-const sharp = require('sharp');
+const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
 const AppError = require('../utils/appError');
 const User = require('../models/userModel');
 const { uploadUserProfilePhoto } = require('../utils/cloudinary');
+
+const createToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET);
+};
 
 const updateUser = async (req, res, next) => {
   try {
@@ -81,4 +85,52 @@ const updateUser = async (req, res, next) => {
   }
 };
 
-module.exports = { updateUser };
+const changePassword = async (req, res, next) => {
+  try {
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+    const user = await User.findById(req.user._id);
+
+    if (!(await user.verifyPassword(currentPassword, user.password))) {
+      return next(new AppError('Incorrect old password', 401));
+    }
+
+    if (newPassword !== confirmPassword) {
+      return next(
+        new AppError('Password and Confirm password do not match', 400)
+      );
+    }
+
+    user.password = newPassword;
+    user.confirmPassword = confirmPassword;
+    await user.save();
+
+    const token = createToken(user.id);
+    res.cookie('jwt', token, {
+      secure: true,
+      httpOnly: true,
+      sameSite: 'None',
+    });
+
+    res.status(200).json({ status: 'success', data: { user } });
+  } catch (error) {
+    return next(new AppError(error.message, 400));
+  }
+};
+
+const logout = (req, res, next) => {
+  try {
+    console.log('Hello');
+    res.clearCookie('jwt', {
+      httpOnly: true,
+      sameSite: 'None',
+      secure: true,
+    });
+    res
+      .status(200)
+      .json({ status: 'success', message: 'Logged out successfully' });
+  } catch (error) {
+    return next(new AppError('Cannot delete you jwt at the moment', 401));
+  }
+};
+
+module.exports = { updateUser, changePassword, logout };

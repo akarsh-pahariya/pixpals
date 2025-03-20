@@ -6,7 +6,11 @@ const {
 } = require('../controllers/authController');
 const { protect } = require('../middlewares/authMiddleware');
 const { upload } = require('../middlewares/multerMiddleware');
-const { updateUser } = require('../controllers/userController');
+const {
+  updateUser,
+  changePassword,
+  logout,
+} = require('../controllers/userController');
 
 const Router = express.Router();
 
@@ -22,5 +26,7 @@ Router.route('/')
   });
 Router.route('/login').post(login);
 Router.route('/register').post(register);
+Router.route('/changePassword').post(protect, changePassword);
+Router.route('/logout').get(protect, logout);
 
 module.exports = Router;

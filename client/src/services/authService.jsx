@@ -61,3 +61,49 @@ export const authenticateUser = async () => {
     }
   }
 };
+
+export const changePassword = async (passwordObject) => {
+  try {
+    const response = await axios.post(
+      `${USER_API_URL}/changePassword`,
+      passwordObject,
+      {
+        withCredentials: true,
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      throw new Error(
+        error.response.data.message ||
+          'Please Login to get access to this route'
+      );
+    } else if (error.request) {
+      throw new Error('Unable to reach the server. Please try again.');
+    } else {
+      throw new Error('Something went wrong. Please try again.');
+    }
+  }
+};
+
+export const logout = async () => {
+  try {
+    const response = await axios.get(`${USER_API_URL}/logout`, {
+      withCredentials: true,
+    });
+
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      throw new Error(
+        error.response.data.message ||
+          'Please Login to get access to this route'
+      );
+    } else if (error.request) {
+      throw new Error('Unable to reach the server. Please try again.');
+    } else {
+      throw new Error('Something went wrong. Please try again.');
+    }
+  }
+};

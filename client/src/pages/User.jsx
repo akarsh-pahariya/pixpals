@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ArrowLeft, Edit, LogOut } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import ProfileHeader from '../components/profile/ProfileHeader';
 import ProfilePhoto from '../components/profile/ProfilePhoto';
@@ -16,6 +16,7 @@ import {
   setIsLoadingToTrue,
 } from '../store/slices/loadingSlice';
 import { addUserInfo } from '../store/slices/userSlice';
+import { changePassword, logout } from '../services/authService';
 
 const User = () => {
   useAuth();
@@ -27,6 +28,7 @@ const User = () => {
   const [photoPreview, setPhotoPreview] = useState(null);
   const [photoFile, setPhotoFile] = useState(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (user) {
@@ -81,18 +83,29 @@ const User = () => {
     dispatch(setIsLoadingToFalse());
   };
 
-  const handlePasswordSubmit = (passwordData) => {
-    if (passwordData.newPassword !== passwordData.confirmPassword) {
-      alert("New passwords don't match");
-      return false;
+  const handlePasswordSubmit = async (passwordData) => {
+    dispatch(setIsLoadingToTrue());
+    try {
+      const response = await changePassword(passwordData);
+      dispatch(addUserInfo(response.data.user));
+      showSuccessToast('Your password has been updated successfully');
+    } catch (error) {
+      showErrorToast(error.message);
     }
-    console.log('Password update data:', passwordData);
     setShowPasswordModal(false);
-    return true;
+    dispatch(setIsLoadingToFalse());
   };
 
-  const handleLogout = () => {
-    console.log('Logging out...');
+  const handleLogout = async () => {
+    dispatch(setIsLoadingToTrue());
+    try {
+      await logout();
+      showSuccessToast('You have logged out successfully');
+    } catch (error) {
+      showErrorToast(error.message);
+    }
+    navigate('/');
+    dispatch(setIsLoadingToFalse());
   };
 
   useEffect(() => {
@@ -167,7 +180,7 @@ const User = () => {
               setIsEditing={setIsEditing}
               setFormData={setFormData}
               setPhotoPreview={setPhotoPreview}
-              showPasswordModal={() => setShowPasswordModal(false)}
+              showPasswordModal={() => setShowPasswordModal(true)}
               photoFile={photoFile}
               setPhotoFile={setPhotoFile}
             />
