@@ -11,17 +11,10 @@ import { showErrorToast } from '../components/ui/Toast';
 const useGroups = (refreshTrigger = 0) => {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((store) => store.user.isLoggedIn);
-  const groupsList = useSelector((store) => store.group.groupsList);
 
   useEffect(() => {
     if (isLoggedIn) {
-      if (groupsList !== null && refreshTrigger === 0) {
-        return;
-      }
-
       const getGroupsList = async () => {
-        dispatch(setIsLoadingToTrue());
-
         try {
           const response = await fetchGroupsList();
           dispatch(addGroupList(response.data.groups));
@@ -31,12 +24,11 @@ const useGroups = (refreshTrigger = 0) => {
             'Unexpected error occurred, cannot fetch the groups user has joined, try reloading the page'
           );
         }
-        dispatch(setIsLoadingToFalse());
       };
 
       getGroupsList();
     }
-  }, [dispatch, isLoggedIn, refreshTrigger, groupsList]);
+  }, [dispatch, isLoggedIn, refreshTrigger]);
 };
 
 export default useGroups;

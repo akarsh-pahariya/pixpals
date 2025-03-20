@@ -39,3 +39,26 @@ export const createGroup = async (groupDetails) => {
     }
   }
 };
+
+export const getGroupImages = async (groupId, pageNumber) => {
+  try {
+    const response = await axios.get(
+      `${API_URL}/group/${groupId}/image?page=${pageNumber}`,
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      throw new Error(
+        error.response.data.message ||
+          'Cannot get group images at the moment, please try again'
+      );
+    } else if (error.request) {
+      throw new Error('Unable to reach the server. Please try again.');
+    } else {
+      throw new Error('Something went wrong. Please try again.');
+    }
+  }
+};

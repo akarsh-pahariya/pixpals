@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../services/authService';
 import { showErrorToast, showSuccessToast } from '../components/ui/Toast';
 import Spinner from '../components/ui/Spinner';
-import { addUserInfo, setAuthChecked } from '../store/slices/userSlice';
+import { addUserInfo } from '../store/slices/userSlice';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import {
@@ -28,7 +28,6 @@ const Login = () => {
     try {
       const userData = await loginUser(username, password);
       dispatch(addUserInfo(userData.data.user));
-      dispatch(setAuthChecked(true));
       showSuccessToast('Login Successful!');
       navigate('/dashboard');
     } catch (error) {

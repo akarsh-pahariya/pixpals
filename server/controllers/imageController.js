@@ -62,6 +62,7 @@ const getGroupImages = async (req, res, next) => {
     const limit = 100;
 
     const groupImages = await Image.find({ groupId })
+      .populate('userId', 'name')
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
       .limit(parseInt(limit));

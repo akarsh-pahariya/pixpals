@@ -15,7 +15,7 @@ import {
   setIsLoadingToFalse,
   setIsLoadingToTrue,
 } from '../store/slices/loadingSlice';
-import { addUserInfo } from '../store/slices/userSlice';
+import { addUserInfo, removeUserInfo } from '../store/slices/userSlice';
 import { changePassword, logout } from '../services/authService';
 
 const User = () => {
@@ -100,6 +100,7 @@ const User = () => {
     dispatch(setIsLoadingToTrue());
     try {
       await logout();
+      dispatch(removeUserInfo());
       showSuccessToast('You have logged out successfully');
     } catch (error) {
       showErrorToast(error.message);

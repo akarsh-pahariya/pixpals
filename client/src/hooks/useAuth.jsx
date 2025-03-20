@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { authenticateUser } from '../services/authService';
-import { addUserInfo, setAuthChecked } from '../store/slices/userSlice';
+import { addUserInfo } from '../store/slices/userSlice';
 import {
   setIsLoadingToFalse,
   setIsLoadingToTrue,
@@ -14,7 +14,6 @@ const useAuth = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
-  const authChecked = useSelector((state) => state.user.authChecked);
 
   useEffect(() => {
     const checkUserAuthentication = async () => {
@@ -38,11 +37,10 @@ const useAuth = () => {
         }
       }
       dispatch(setIsLoadingToFalse());
-      dispatch(setAuthChecked(true));
     };
 
-    if (!isLoggedIn && !authChecked) checkUserAuthentication();
-  }, [dispatch, navigate, isLoggedIn, location, authChecked]);
+    if (!isLoggedIn) checkUserAuthentication();
+  }, [dispatch, navigate, isLoggedIn, location]);
 };
 
 export default useAuth;

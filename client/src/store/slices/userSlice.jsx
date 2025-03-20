@@ -5,18 +5,18 @@ const userSlice = createSlice({
   initialState: {
     isLoggedIn: false,
     userInfo: null,
-    authChecked: false,
   },
   reducers: {
     addUserInfo: (state, action) => {
       state.isLoggedIn = true;
       state.userInfo = action.payload;
     },
-    setAuthChecked: (state, action) => {
-      state.authChecked = action.payload;
+    removeUserInfo: (state) => {
+      state.isLoggedIn = false;
+      state.userInfo = null;
     },
   },
 });
 
-export const { addUserInfo, setAuthChecked } = userSlice.actions;
+export const { addUserInfo, removeUserInfo } = userSlice.actions;
 export default userSlice.reducer;
