@@ -25,6 +25,10 @@ const appRouter = createBrowserRouter([
         element: <GroupDetails />,
       },
       {
+        path: 'group/:groupId/details',
+        element: <GroupDetails />,
+      },
+      {
         path: 'login',
         element: <Login />,
       },

@@ -117,7 +117,7 @@ const User = () => {
     };
   }, [photoPreview]);
 
-  if (loading || !user) return <Spinner />;
+  if (loading) return <Spinner />;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black bg-gradient-to-br from-black via-gray-900 to-purple-950 p-4">

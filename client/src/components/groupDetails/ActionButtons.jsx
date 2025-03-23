@@ -3,7 +3,7 @@ import { Upload, Info } from 'lucide-react';
 
 const ActionButtons = ({ handlePostImage, handleViewGroupInfo }) => {
   return (
-    <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+    <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
       <button
         className="w-full sm:w-auto py-3 px-5 font-bold rounded-lg text-white bg-cyan-500 hover:bg-cyan-600 transition-all duration-300 shadow-lg shadow-cyan-500/20 transform hover:scale-105"
         onClick={handlePostImage}

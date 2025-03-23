@@ -14,6 +14,8 @@ import PaginationControls from '../components/groupDetails/PaginationControls';
 import ImageViewer from '../components/groupDetails/ImageViewer';
 import LeaveGroupModal from '../components/groupDetails/LeaveGroupModal';
 import LeaveOrDeleteGroupButton from '../components/groupDetails/LeaveOrDeleteGroupButton';
+import DeleteGroupModal from '../components/groupDetails/DeleteGroupModal';
+import useIsAdmin from '../hooks/useIsAdmin';
 
 const GroupDetails = () => {
   useAuth();
@@ -21,14 +23,12 @@ const GroupDetails = () => {
   const navigate = useNavigate();
   const { groupId } = useParams();
   const groupDetails = useSelector((state) => state.group);
-  const userDetails = useSelector((state) => state.user.userInfo);
   const [pageNumber, setPageNumber] = useState(null);
   const [totalPages, setTotalPages] = useState(null);
   const [imageData, setImageData] = useState(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [showLeaveModal, setShowLeaveModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
   const loading = useSelector((state) => state.loading.isLoading);
   const api_response = useGroupDetails(groupId, pageNumber);
   const currentGroup = groupDetails.groupsList
@@ -36,6 +36,7 @@ const GroupDetails = () => {
         (group) => group.id === groupId || group.id === parseInt(groupId, 10)
       )
     : null;
+  const isAdmin = useIsAdmin(currentGroup);
 
   useEffect(() => {
     if (api_response) {
@@ -44,16 +45,6 @@ const GroupDetails = () => {
       setImageData(api_response.images);
     }
   }, [api_response]);
-
-  useEffect(() => {
-    if (userDetails && currentGroup) {
-      if (userDetails.id === currentGroup.admin) {
-        setIsAdmin(true);
-      } else {
-        setIsAdmin(false);
-      }
-    }
-  }, [userDetails, currentGroup]);
 
   const handleViewGroupInfo = () => {
     console.log('Viewing group info for:');
@@ -74,6 +65,12 @@ const GroupDetails = () => {
   const confirmLeaveGroup = () => {
     console.log('API call would be made here to leave the group');
     setShowLeaveModal(false);
+    navigate('/dashboard');
+  };
+
+  const confirmDeleteGroup = () => {
+    console.log('API call would be made here to delete the group');
+    setShowDeleteModal(false);
     navigate('/dashboard');
   };
 
@@ -102,8 +99,7 @@ const GroupDetails = () => {
     }
   };
 
-  if (loading || !currentGroup || !imageData || !userDetails)
-    return <Spinner />;
+  if (loading || !currentGroup || !imageData) return <Spinner />;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black bg-gradient-to-br from-black via-gray-900 to-purple-950 p-4">
@@ -172,9 +168,9 @@ const GroupDetails = () => {
         )}
 
         {showDeleteModal && (
-          <LeaveGroupModal
+          <DeleteGroupModal
             groupName={currentGroup.name}
-            onConfirm={confirmLeaveGroup}
+            onConfirm={confirmDeleteGroup}
             onCancel={closeDeleteModal}
           />
         )}

@@ -23,25 +23,24 @@ import {
 } from '../services/invitationService';
 import { Link } from 'react-router-dom';
 import { User, Plus, Mail } from 'lucide-react';
+import { setRefreshGroupsToTrue } from '../store/slices/groupSlice';
 
 const Dashboard = () => {
   useAuth();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isInvitationsModalOpen, setIsInvitationsModalOpen] = useState(false);
-  const [refreshGroups, setRefreshGroups] = useState(0);
   const { invitations, loadInvitations } = useInvitations();
   const loading = useSelector((state) => state.loading.isLoading);
   const user = useSelector((state) => state.user.userInfo);
-  const groupsList = useSelector((state) => state.group.groupsList);
   const dispatch = useDispatch();
-  useGroups(refreshGroups);
+  useGroups();
 
   const handleCreateGroup = async (groupData) => {
     dispatch(setIsLoadingToTrue());
     try {
       await createGroup(groupData);
       showSuccessToast('Group has been created successfully!');
-      setRefreshGroups((prev) => prev + 1);
+      dispatch(setRefreshGroupsToTrue());
       setIsCreateModalOpen(false);
     } catch (error) {
       showErrorToast(error.message);
@@ -58,7 +57,7 @@ const Dashboard = () => {
       const result = await acceptInvitation(groupId);
       showSuccessToast(result.message);
       loadInvitations();
-      setRefreshGroups((prev) => prev + 1);
+      dispatch(setRefreshGroupsToTrue());
     } catch (error) {
       showErrorToast(error.message);
     }
@@ -85,7 +84,7 @@ const Dashboard = () => {
     setIsInvitationsModalOpen(true);
   };
 
-  if (loading || !user || !groupsList) return <Spinner />;
+  if (loading) return <Spinner />;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black bg-gradient-to-br from-black via-gray-900 to-purple-950 p-4">
