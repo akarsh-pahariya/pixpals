@@ -7,7 +7,7 @@ import {
   setIsLoadingToTrue,
 } from '../store/slices/loadingSlice';
 
-const useGroupDetails = (groupId, pageNumber) => {
+const useGroupUploads = (groupId, pageNumber) => {
   const [data, setData] = useState(null);
   const dispatch = useDispatch();
 
@@ -29,4 +29,4 @@ const useGroupDetails = (groupId, pageNumber) => {
   return data;
 };
 
-export default useGroupDetails;
+export default useGroupUploads;

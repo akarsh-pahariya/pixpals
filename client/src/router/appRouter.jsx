@@ -6,6 +6,7 @@ import Dashboard from '../pages/Dashboard';
 import GroupDetails from '../pages/GroupDetails';
 import Home from '../pages/Home';
 import User from '../pages/User';
+import GroupUploads from '../pages/GroupUploads';
 
 const appRouter = createBrowserRouter([
   {
@@ -22,7 +23,7 @@ const appRouter = createBrowserRouter([
       },
       {
         path: 'group/:groupId',
-        element: <GroupDetails />,
+        element: <GroupUploads />,
       },
       {
         path: 'group/:groupId/details',

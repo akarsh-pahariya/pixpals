@@ -1,7 +1,7 @@
 // ActionButtons component
 import { Upload, Info } from 'lucide-react';
 
-const ActionButtons = ({ handlePostImage, handleViewGroupInfo }) => {
+const ActionButtons = ({ handlePostImage, handleViewGroupDetails }) => {
   return (
     <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
       <button
@@ -14,7 +14,7 @@ const ActionButtons = ({ handlePostImage, handleViewGroupInfo }) => {
       </button>
       <button
         className="w-full sm:w-auto py-3 px-5 font-bold rounded-lg text-white bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 transition-all duration-300 shadow-lg shadow-amber-500/20 transform hover:scale-105"
-        onClick={handleViewGroupInfo}
+        onClick={handleViewGroupDetails}
       >
         <div className="flex items-center justify-center gap-2">
           <Info className="w-5 h-5" /> Group Details
