@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { User, Plus, Mail } from 'lucide-react';
 import Spinner from '../components/ui/Spinner';
 import useAuth from '../hooks/useAuth';
 import useGroups from '../hooks/useGroups';
-import UserGroups from '../components/groups/UserGroups';
-import CreateGroupModal from '../components/groups/CreateGroupModal';
+import UserGroups from '../components/dashboard/UserGroups';
+import CreateGroupModal from '../components/dashboard/CreateGroupModal';
 import { createGroup } from '../services/groupService';
 import {
   showDefaultToast,
@@ -15,14 +17,12 @@ import {
   setIsLoadingToFalse,
   setIsLoadingToTrue,
 } from '../store/slices/loadingSlice';
-import PendingInvitationsModal from '../components/invitations/PendingInvitationsModal';
+import PendingInvitationsModal from '../components/dashboard/PendingInvitationsModal';
 import useInvitations from '../hooks/useInvitations';
 import {
   acceptInvitation,
   declineInvitation,
 } from '../services/invitationService';
-import { Link } from 'react-router-dom';
-import { User, Plus, Mail } from 'lucide-react';
 import { setRefreshGroupsToTrue } from '../store/slices/groupSlice';
 
 const Dashboard = () => {
