@@ -1,11 +1,7 @@
 // ActionButtons component
-import { Upload, Info, LogOut } from 'lucide-react';
+import { Upload, Info } from 'lucide-react';
 
-const ActionButtons = ({
-  handlePostImage,
-  handleViewGroupInfo,
-  handleLeaveGroup,
-}) => {
+const ActionButtons = ({ handlePostImage, handleViewGroupInfo }) => {
   return (
     <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
       <button
@@ -22,14 +18,6 @@ const ActionButtons = ({
       >
         <div className="flex items-center justify-center gap-2">
           <Info className="w-5 h-5" /> Group Details
-        </div>
-      </button>
-      <button
-        className="w-full sm:w-auto py-3 px-5 font-bold rounded-lg text-white bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 transition-all duration-300 shadow-lg shadow-red-500/20 transform hover:scale-105"
-        onClick={handleLeaveGroup}
-      >
-        <div className="flex items-center justify-center gap-2">
-          <LogOut className="w-5 h-5" /> Leave Group
         </div>
       </button>
     </div>

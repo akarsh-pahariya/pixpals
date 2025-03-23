@@ -13,6 +13,7 @@ import EmptyState from '../components/groupDetails/EmptyState';
 import PaginationControls from '../components/groupDetails/PaginationControls';
 import ImageViewer from '../components/groupDetails/ImageViewer';
 import LeaveGroupModal from '../components/groupDetails/LeaveGroupModal';
+import LeaveOrDeleteGroupButton from '../components/groupDetails/LeaveOrDeleteGroupButton';
 
 const GroupDetails = () => {
   useAuth();
@@ -20,11 +21,14 @@ const GroupDetails = () => {
   const navigate = useNavigate();
   const { groupId } = useParams();
   const groupDetails = useSelector((state) => state.group);
+  const userDetails = useSelector((state) => state.user.userInfo);
   const [pageNumber, setPageNumber] = useState(null);
   const [totalPages, setTotalPages] = useState(null);
   const [imageData, setImageData] = useState(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [showLeaveModal, setShowLeaveModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const loading = useSelector((state) => state.loading.isLoading);
   const api_response = useGroupDetails(groupId, pageNumber);
   const currentGroup = groupDetails.groupsList
@@ -34,13 +38,22 @@ const GroupDetails = () => {
     : null;
 
   useEffect(() => {
-    console.log(api_response);
     if (api_response) {
       setPageNumber(api_response.page);
       setTotalPages(api_response.totalPages);
       setImageData(api_response.images);
     }
   }, [api_response]);
+
+  useEffect(() => {
+    if (userDetails && currentGroup) {
+      if (userDetails.id === currentGroup.admin) {
+        setIsAdmin(true);
+      } else {
+        setIsAdmin(false);
+      }
+    }
+  }, [userDetails, currentGroup]);
 
   const handleViewGroupInfo = () => {
     console.log('Viewing group info for:');
@@ -54,6 +67,10 @@ const GroupDetails = () => {
     setShowLeaveModal(true);
   };
 
+  const handleDeleteGroup = () => {
+    setShowDeleteModal(true);
+  };
+
   const confirmLeaveGroup = () => {
     console.log('API call would be made here to leave the group');
     setShowLeaveModal(false);
@@ -62,6 +79,10 @@ const GroupDetails = () => {
 
   const closeLeaveModal = () => {
     setShowLeaveModal(false);
+  };
+
+  const closeDeleteModal = () => {
+    setShowDeleteModal(false);
   };
 
   const openImageViewer = (index) => {
@@ -81,7 +102,8 @@ const GroupDetails = () => {
     }
   };
 
-  if (loading || !currentGroup || !imageData) return <Spinner />;
+  if (loading || !currentGroup || !imageData || !userDetails)
+    return <Spinner />;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black bg-gradient-to-br from-black via-gray-900 to-purple-950 p-4">
@@ -107,11 +129,16 @@ const GroupDetails = () => {
           </Link>
         </div>
 
-        <ActionButtons
-          handlePostImage={handlePostImage}
-          handleViewGroupInfo={handleViewGroupInfo}
-          handleLeaveGroup={handleLeaveGroup}
-        />
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+          <ActionButtons
+            handlePostImage={handlePostImage}
+            handleViewGroupInfo={handleViewGroupInfo}
+          />
+          <LeaveOrDeleteGroupButton
+            isAdmin={isAdmin}
+            handleAction={isAdmin ? handleDeleteGroup : handleLeaveGroup}
+          />
+        </div>
 
         {imageData.length > 0 ? (
           <ImageGrid imageData={imageData} openImageViewer={openImageViewer} />
@@ -141,6 +168,14 @@ const GroupDetails = () => {
             groupName={currentGroup.name}
             onConfirm={confirmLeaveGroup}
             onCancel={closeLeaveModal}
+          />
+        )}
+
+        {showDeleteModal && (
+          <LeaveGroupModal
+            groupName={currentGroup.name}
+            onConfirm={confirmLeaveGroup}
+            onCancel={closeDeleteModal}
           />
         )}
       </div>
