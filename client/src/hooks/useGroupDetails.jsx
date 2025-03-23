@@ -1,19 +1,32 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { getGroupImages } from '../services/groupService';
 import { showErrorToast } from '../components/ui/Toast';
+import {
+  setIsLoadingToFalse,
+  setIsLoadingToTrue,
+} from '../store/slices/loadingSlice';
 
 const useGroupDetails = (groupId, pageNumber) => {
+  const [data, setData] = useState(null);
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    const getImagesOfGroup = async (page) => {
+    dispatch(setIsLoadingToTrue());
+    const getImagesOfGroup = async () => {
       try {
         const response = await getGroupImages(groupId, pageNumber);
-        console.log(response);
+        setData(response.data);
       } catch (error) {
         showErrorToast(error.message);
       }
     };
+
     getImagesOfGroup();
-  }, [groupId, pageNumber]);
+    dispatch(setIsLoadingToFalse());
+  }, [groupId, pageNumber, dispatch]);
+
+  return data;
 };
 
 export default useGroupDetails;

@@ -61,15 +61,19 @@ const getGroupImages = async (req, res, next) => {
     const page = parseInt(req.query.page) || 1;
     const limit = 100;
 
+    const totalImages = await Image.countDocuments({ groupId });
     const groupImages = await Image.find({ groupId })
       .populate('userId', 'name')
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
       .limit(parseInt(limit));
+    const totalPages = Math.ceil(totalImages / limit);
 
     res.status(200).json({
       status: 'success',
       data: {
+        totalPages,
+        totalPages,
         results: groupImages.length,
         page: parseInt(page),
         images: groupImages,
