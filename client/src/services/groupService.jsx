@@ -62,3 +62,50 @@ export const getGroupImages = async (groupId, pageNumber) => {
     }
   }
 };
+
+export const getGroupDetails = async (groupId) => {
+  try {
+    const response = await axios.get(`${API_URL}/group/${groupId}/details`, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      throw new Error(
+        error.response.data.message ||
+          'Cannot get group details at the moment, please try again'
+      );
+    } else if (error.request) {
+      throw new Error('Unable to reach the server. Please try again.');
+    } else {
+      throw new Error('Something went wrong. Please try again.');
+    }
+  }
+};
+
+export const sendInvitation = async (groupId, usernames) => {
+  try {
+    console.log(usernames);
+    const response = await axios.post(
+      `${API_URL}/invite/${groupId}`,
+      {
+        members: usernames,
+      },
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      throw new Error(
+        error.response.data.message ||
+          'Cannot send invitations at the moment, please try again'
+      );
+    } else if (error.request) {
+      throw new Error('Unable to reach the server. Please try again.');
+    } else {
+      throw new Error('Something went wrong. Please try again.');
+    }
+  }
+};

@@ -119,7 +119,6 @@ const changePassword = async (req, res, next) => {
 
 const logout = (req, res, next) => {
   try {
-    console.log('Hello');
     res.clearCookie('jwt', {
       httpOnly: true,
       sameSite: 'None',

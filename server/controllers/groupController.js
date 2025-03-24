@@ -3,6 +3,9 @@ const User = require('../models/userModel');
 const AppError = require('../utils/appError');
 const UserGroupMembership = require('../models/userGroupMembershipModel');
 const { addMembersToGroup } = require('../utils/invitationUtils');
+const Image = require('../models/ImageModel');
+const GroupInvitation = require('../models/groupInvitationModel');
+const { default: mongoose } = require('mongoose');
 
 const createGroup = async (req, res, next) => {
   try {
@@ -31,7 +34,7 @@ const createGroup = async (req, res, next) => {
   }
 };
 
-const getGroupDetails = async (req, res, next) => {
+const getGroup = async (req, res, next) => {
   try {
     const userId = req.user._id;
 
@@ -50,7 +53,80 @@ const getGroupDetails = async (req, res, next) => {
   }
 };
 
+const getGroupDetails = async (req, res, next) => {
+  try {
+    const { groupId } = req.params;
+
+    const [group, groupImageCounts, invitationCount, users] = await Promise.all(
+      [
+        Group.findById(groupId).select('createdAt admin name'),
+        Image.countDocuments({ groupId }),
+        GroupInvitation.countDocuments({ groupId }),
+        UserGroupMembership.find({ groupId }).populate(
+          'userId',
+          'username name createdAt'
+        ),
+      ]
+    );
+
+    if (!group) {
+      return next(new AppError('Group not found', 404));
+    }
+
+    const admin = await User.findById(group.admin).select(
+      'username name createdAt'
+    );
+
+    const userIds = users.map((user) => user.userId._id);
+
+    const groupObjectId = new mongoose.Types.ObjectId(groupId);
+    const userImageCounts = await Image.aggregate([
+      {
+        $match: {
+          groupId: groupObjectId,
+          userId: { $in: userIds },
+        },
+      },
+      { $group: { _id: '$userId', count: { $sum: 1 } } },
+    ]);
+
+    const imageCountMap = userImageCounts.reduce((acc, { _id, count }) => {
+      acc[_id.toString()] = count;
+      return acc;
+    }, {});
+
+    const response = {
+      status: 'success',
+      data: {
+        admin: {
+          username: admin.username,
+          name: admin.name,
+          createdAt: admin.createdAt,
+          groupCreatedAt: group.createdAt,
+        },
+        groupInfo: {
+          membersCount: users.length,
+          imagesPosted: groupImageCounts,
+          invitations: invitationCount,
+          groupName: group.name,
+        },
+        groupMembers: users.map((user) => ({
+          username: user.userId.username,
+          name: user.userId.name,
+          joinedAt: user.joinedAt,
+          imagesPosted: imageCountMap[user.userId._id.toString()] || 0,
+        })),
+      },
+    };
+
+    res.status(200).json(response);
+  } catch (error) {
+    return next(new AppError(error.message, 500));
+  }
+};
+
 module.exports = {
-  getGroupDetails,
+  getGroup,
   createGroup,
+  getGroupDetails,
 };

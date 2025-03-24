@@ -13,6 +13,7 @@ const groupSlice = createSlice({
     },
     clearGroupList: (state) => {
       state.groupsList = [];
+      state.refreshGroups = true;
     },
     setRefreshGroupsToTrue: (state) => {
       state.refreshGroups = true;

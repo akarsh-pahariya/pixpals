@@ -17,6 +17,7 @@ import {
 } from '../store/slices/loadingSlice';
 import { addUserInfo, removeUserInfo } from '../store/slices/userSlice';
 import { changePassword, logout } from '../services/authService';
+import { clearGroupList } from '../store/slices/groupSlice';
 
 const User = () => {
   useAuth();
@@ -99,14 +100,16 @@ const User = () => {
   const handleLogout = async () => {
     dispatch(setIsLoadingToTrue());
     try {
-      await logout();
       dispatch(removeUserInfo());
+      dispatch(clearGroupList());
+      await logout();
+      navigate('/', { replace: true });
       showSuccessToast('You have logged out successfully');
     } catch (error) {
       showErrorToast(error.message);
+    } finally {
+      dispatch(setIsLoadingToFalse());
     }
-    navigate('/');
-    dispatch(setIsLoadingToFalse());
   };
 
   useEffect(() => {
@@ -117,7 +120,7 @@ const User = () => {
     };
   }, [photoPreview]);
 
-  if (loading) return <Spinner />;
+  if (loading || !user) return <Spinner />;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black bg-gradient-to-br from-black via-gray-900 to-purple-950 p-4">

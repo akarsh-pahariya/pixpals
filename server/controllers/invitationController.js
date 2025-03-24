@@ -9,6 +9,8 @@ const inviteMembersToGroup = async (req, res, next) => {
   try {
     const groupId = req.params.groupId;
     const members = req.body.members;
+    console.log(members);
+    console.log(groupId);
 
     const group = await Group.findById(groupId);
 
