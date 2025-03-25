@@ -5,7 +5,7 @@ const UserGroupMembership = require('../models/userGroupMembershipModel');
 const { addMembersToGroup } = require('../utils/invitationUtils');
 const Image = require('../models/ImageModel');
 const GroupInvitation = require('../models/groupInvitationModel');
-const { deleteAllGroupImages } = require('../utils/cloudinary');
+const { deleteImages } = require('../utils/cloudinary');
 const { default: mongoose } = require('mongoose');
 
 const createGroup = async (req, res, next) => {
@@ -139,14 +139,51 @@ const deleteGroup = async (req, res, next) => {
 
     const publicIds = imagesData.map((image) => image.publicId);
 
-    await Promise.all([
-      deleteAllGroupImages(publicIds),
-      Image.deleteMany({ groupId }),
-    ]);
+    await Promise.all([deleteImages(publicIds), Image.deleteMany({ groupId })]);
 
     res.status(200).json({
       status: 'success',
       message: 'Group and all associated data deleted successfully',
+    });
+  } catch (error) {
+    return next(new AppError(error.message, 500));
+  }
+};
+
+const leaveGroup = async (req, res, next) => {
+  try {
+    const userId = req.user._id;
+    const groupId = req.params.groupId;
+
+    const group = await Group.findById(groupId);
+    if (group.admin.equals(userId))
+      return next(new AppError('Admin cannot leave the group', 400));
+
+    const userImages = await Image.find({
+      userId,
+      groupId,
+    }).select('publicId');
+
+    if (!userImages.length) {
+      await UserGroupMembership.findOneAndDelete({ userId, groupId });
+
+      return res.status(200).json({
+        status: 'success',
+        message: 'Successfully left the group',
+      });
+    }
+
+    const publicIds = userImages.map((image) => image.publicId);
+
+    await Promise.all([
+      UserGroupMembership.findOneAndDelete({ userId, groupId }),
+      Image.deleteMany({ userId, groupId }),
+      deleteImages(publicIds),
+    ]);
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Successfully left the group and cleaned up all resources',
     });
   } catch (error) {
     return next(new AppError(error.message, 500));
@@ -158,4 +195,5 @@ module.exports = {
   createGroup,
   getGroupDetails,
   deleteGroup,
+  leaveGroup,
 };

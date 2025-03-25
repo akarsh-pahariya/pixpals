@@ -33,7 +33,7 @@ const uploadGroupImage = async (localFilePath) => {
   }
 };
 
-const deleteAllGroupImages = async (publicIds) => {
+const deleteImages = async (publicIds) => {
   if (!publicIds?.length) return [];
 
   try {
@@ -86,5 +86,5 @@ const uploadUserProfilePhoto = async (localFilePath, userId, publicId) => {
 module.exports = {
   uploadGroupImage,
   uploadUserProfilePhoto,
-  deleteAllGroupImages,
+  deleteImages,
 };

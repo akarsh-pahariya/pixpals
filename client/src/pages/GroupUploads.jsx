@@ -16,7 +16,7 @@ import LeaveGroupModal from '../components/group uploads/LeaveGroupModal';
 import LeaveOrDeleteGroupButton from '../components/group uploads/LeaveOrDeleteGroupButton';
 import DeleteGroupModal from '../components/group uploads/DeleteGroupModal';
 import useIsAdmin from '../hooks/useIsAdmin';
-import { deleteGroup } from '../services/groupService';
+import { deleteGroup, leaveGroup } from '../services/groupService';
 import { showErrorToast, showSuccessToast } from '../components/ui/Toast';
 import { setRefreshGroupsToTrue } from '../store/slices/groupSlice';
 import {
@@ -85,8 +85,17 @@ const GroupUploads = () => {
     navigate('/dashboard');
   };
 
-  const confirmLeaveGroup = () => {
-    console.log('API call would be made here to delete the group');
+  const confirmLeaveGroup = async () => {
+    dispatch(setIsLoadingToTrue());
+    try {
+      const response = await leaveGroup(groupId);
+      showSuccessToast(response.message);
+      dispatch(setRefreshGroupsToTrue());
+    } catch (error) {
+      showErrorToast(error.message);
+    } finally {
+      dispatch(setIsLoadingToFalse());
+    }
     setShowLeaveModal(false);
     navigate('/dashboard');
   };

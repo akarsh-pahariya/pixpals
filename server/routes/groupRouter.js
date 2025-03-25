@@ -4,6 +4,7 @@ const {
   getGroup,
   getGroupDetails,
   deleteGroup,
+  leaveGroup,
 } = require('../controllers/groupController');
 const { protect } = require('../middlewares/authMiddleware');
 const imageRouter = require('./imageRouter');
@@ -18,6 +19,11 @@ Router.route('/:groupId/details').get(
   protect,
   requireGroupMembership,
   getGroupDetails
+);
+Router.route('/:groupId/leave').delete(
+  protect,
+  requireGroupMembership,
+  leaveGroup
 );
 Router.route('/:groupId').delete(protect, checkGroupAdmin, deleteGroup);
 Router.route('/').get(protect, getGroup);

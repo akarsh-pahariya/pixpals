@@ -128,3 +128,23 @@ export const deleteGroup = async (groupId) => {
     }
   }
 };
+
+export const leaveGroup = async (groupId) => {
+  try {
+    const response = await axios.delete(`${API_URL}/group/${groupId}/leave`, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      throw new Error(
+        error.response.data.message ||
+          'Cannot leave group at the moment, please try again'
+      );
+    } else if (error.request) {
+      throw new Error('Unable to reach the server. Please try again.');
+    } else {
+      throw new Error('Something went wrong. Please try again.');
+    }
+  }
+};
