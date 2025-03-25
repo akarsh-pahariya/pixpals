@@ -5,6 +5,7 @@ import ImagePreview from '../components/image upload/ImagePreview';
 import { showErrorToast, showSuccessToast } from '../components/ui/Toast';
 import Spinner from '../components/ui/Spinner';
 import axios from 'axios';
+import { uploadImagesToGroup } from '../services/imageService';
 
 const ImageUpload = () => {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -22,20 +23,12 @@ const ImageUpload = () => {
     });
 
     try {
-      const res = await axios.post(
-        `${API_URL}/group/${groupId}/image`,
-        formData,
-        {
-          withCredentials: true,
-          headers: { 'Content-Type': 'multipart/form-data' },
-        }
-      );
-
-      setResponse(res.data);
+      const res = await uploadImagesToGroup(formData, groupId);
+      setResponse(res);
       setError(null);
-    } catch (err) {
-      setError(err.response.data);
-      setResponse(null);
+    } catch (error) {
+      console.log(error);
+      setError(error);
     } finally {
       setLoading(false);
     }
@@ -44,18 +37,18 @@ const ImageUpload = () => {
   useEffect(() => {
     if (response?.status === 'success') {
       showSuccessToast('Image has been successfully uploaded in the group');
-      setFiles([]);
     }
+    setFiles([]);
   }, [response]);
 
   useEffect(() => {
-    if (error?.status === 'fail') {
+    if (error) {
       showErrorToast(
         error.message ||
           'Image cannot be uploaded in the group for unknown reasons, please try again'
       );
-      setFiles([]);
     }
+    setFiles([]);
   }, [error]);
 
   if (loading) return <Spinner />;

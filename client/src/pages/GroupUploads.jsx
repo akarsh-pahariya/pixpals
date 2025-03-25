@@ -1,6 +1,6 @@
 // Main page component
 import { useEffect, useState } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ArrowLeft } from 'lucide-react';
 import Spinner from '../components/ui/Spinner';
@@ -28,6 +28,7 @@ const GroupUploads = () => {
   useAuth();
   useGroups();
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
   const { groupId } = useParams();
   const groupDetails = useSelector((state) => state.group);
@@ -59,7 +60,8 @@ const GroupUploads = () => {
   };
 
   const handlePostImage = () => {
-    console.log('Opening post image dialog');
+    const currentPath = location.pathname;
+    navigate(`${currentPath}upload`);
   };
 
   const handleLeaveGroup = () => {
