@@ -49,11 +49,11 @@ const userSchema = new mongoose.Schema(
       url: {
         type: String,
         default:
-          'https://res.cloudinary.com/dnnj53pqf/image/upload/v1742311705/hxv9tux88h0ny6giapmf_Square_rdlfwf.jpg',
+          'https://res.cloudinary.com/dnnj53pqf/image/upload/v1742882638/ebtyc00ucwiurvnemsbm.jpg',
       },
       publicId: {
         type: String,
-        default: 'hxv9tux88h0ny6giapmf_Square_rdlfwf',
+        default: 'ebtyc00ucwiurvnemsbm',
       },
     },
   },

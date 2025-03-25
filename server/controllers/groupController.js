@@ -125,8 +125,19 @@ const getGroupDetails = async (req, res, next) => {
   }
 };
 
+const deleteGroup = async (req, res, next) => {
+  try {
+    const groupId = req.group._id;
+
+    res.status(200).json({ status: 'success' });
+  } catch (error) {
+    return next(new AppError(error.message, 500));
+  }
+};
+
 module.exports = {
   getGroup,
   createGroup,
   getGroupDetails,
+  deleteGroup,
 };

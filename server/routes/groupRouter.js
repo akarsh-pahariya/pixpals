@@ -3,11 +3,13 @@ const {
   createGroup,
   getGroup,
   getGroupDetails,
+  deleteGroup,
 } = require('../controllers/groupController');
 const { protect } = require('../middlewares/authMiddleware');
 const imageRouter = require('./imageRouter');
 const {
   requireGroupMembership,
+  checkGroupAdmin,
 } = require('../middlewares/groupAuthMiddleware');
 
 const Router = express.Router();
@@ -17,6 +19,7 @@ Router.route('/:groupId/details').get(
   requireGroupMembership,
   getGroupDetails
 );
+Router.route('/:groupId').delete(protect, checkGroupAdmin, deleteGroup);
 Router.route('/').get(protect, getGroup);
 Router.route('/').post(protect, createGroup);
 

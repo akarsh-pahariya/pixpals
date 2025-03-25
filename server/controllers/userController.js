@@ -58,11 +58,19 @@ const updateUser = async (req, res, next) => {
       const user = await User.findById(userId).select('profilePhoto.publicId');
       const userProfilePhotoPublicId = user?.profilePhoto?.publicId;
 
-      const uploadResponse = await uploadUserProfilePhoto(
-        outputPath,
-        userId.toString(),
-        userProfilePhotoPublicId
-      );
+      let uploadResponse = null;
+      if (userProfilePhotoPublicId === 'ebtyc00ucwiurvnemsbm') {
+        uploadResponse = await uploadUserProfilePhoto(
+          outputPath,
+          userId.toString()
+        );
+      } else {
+        uploadResponse = await uploadUserProfilePhoto(
+          outputPath,
+          userId.toString(),
+          userProfilePhotoPublicId
+        );
+      }
 
       updateData.profilePhoto = {
         url: uploadResponse.secure_url,

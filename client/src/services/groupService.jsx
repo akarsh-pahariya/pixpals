@@ -85,7 +85,6 @@ export const getGroupDetails = async (groupId) => {
 
 export const sendInvitation = async (groupId, usernames) => {
   try {
-    console.log(usernames);
     const response = await axios.post(
       `${API_URL}/invite/${groupId}`,
       {

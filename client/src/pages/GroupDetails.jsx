@@ -62,10 +62,8 @@ const GroupDetailsPage = () => {
     dispatch(setIsLoadingToFalse());
   };
 
-  const handleBackdropClick = (e) => {
-    if (e.target.id === 'modal-backdrop') {
-      setIsInviteModalOpen(false);
-    }
+  const handleBackdropClick = () => {
+    setIsInviteModalOpen(false);
   };
 
   const handleAddUser = () => {
