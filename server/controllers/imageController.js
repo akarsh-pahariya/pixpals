@@ -33,7 +33,7 @@ const handleImageUpload = async (req, res, next) => {
           .jpeg({ quality: 80 })
           .toFile(outputPath);
 
-        const uploadResponse = await uploadGroupImage(outputPath, groupId);
+        const uploadResponse = await uploadGroupImage(outputPath);
 
         const imageObj = {
           secureURL: uploadResponse.secure_url,

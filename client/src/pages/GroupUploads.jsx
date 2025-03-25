@@ -1,7 +1,7 @@
 // Main page component
 import { useEffect, useState } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ArrowLeft } from 'lucide-react';
 import Spinner from '../components/ui/Spinner';
 import useGroupUploads from '../hooks/useGroupUploads';
@@ -16,11 +16,19 @@ import LeaveGroupModal from '../components/group uploads/LeaveGroupModal';
 import LeaveOrDeleteGroupButton from '../components/group uploads/LeaveOrDeleteGroupButton';
 import DeleteGroupModal from '../components/group uploads/DeleteGroupModal';
 import useIsAdmin from '../hooks/useIsAdmin';
+import { deleteGroup } from '../services/groupService';
+import { showErrorToast, showSuccessToast } from '../components/ui/Toast';
+import { setRefreshGroupsToTrue } from '../store/slices/groupSlice';
+import {
+  setIsLoadingToFalse,
+  setIsLoadingToTrue,
+} from '../store/slices/loadingSlice';
 
 const GroupUploads = () => {
   useAuth();
   useGroups();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { groupId } = useParams();
   const groupDetails = useSelector((state) => state.group);
   const [pageNumber, setPageNumber] = useState(null);
@@ -62,15 +70,24 @@ const GroupUploads = () => {
     setShowDeleteModal(true);
   };
 
-  const confirmLeaveGroup = () => {
-    console.log('API call would be made here to leave the group');
+  const confirmDeleteGroup = async () => {
+    dispatch(setIsLoadingToTrue());
+    try {
+      const response = await deleteGroup(groupId);
+      showSuccessToast(response.message);
+      dispatch(setRefreshGroupsToTrue());
+    } catch (error) {
+      showErrorToast(error.message);
+    } finally {
+      dispatch(setIsLoadingToFalse());
+    }
     setShowLeaveModal(false);
     navigate('/dashboard');
   };
 
-  const confirmDeleteGroup = () => {
+  const confirmLeaveGroup = () => {
     console.log('API call would be made here to delete the group');
-    setShowDeleteModal(false);
+    setShowLeaveModal(false);
     navigate('/dashboard');
   };
 

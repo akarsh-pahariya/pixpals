@@ -8,14 +8,10 @@ cloudinary.v2.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const uploadGroupImage = async (localFilePath, groupId) => {
+const uploadGroupImage = async (localFilePath) => {
   try {
     if (!localFilePath) {
       throw new AppError('No file path provided for upload', 400);
-    }
-
-    if (!groupId) {
-      throw new AppError('Group ID is required for uploading images', 400);
     }
 
     const response = await cloudinary.uploader.upload(localFilePath, {
@@ -32,6 +28,20 @@ const uploadGroupImage = async (localFilePath, groupId) => {
 
     throw new AppError(
       error.message || 'Error uploading image to Cloudinary',
+      500
+    );
+  }
+};
+
+const deleteAllGroupImages = async (publicIds) => {
+  if (!publicIds?.length) return [];
+
+  try {
+    const result = await cloudinary.api.delete_resources(publicIds);
+    return result;
+  } catch (error) {
+    throw new AppError(
+      error.message || 'Error deleting images of this group from the cloud',
       500
     );
   }
@@ -73,4 +83,8 @@ const uploadUserProfilePhoto = async (localFilePath, userId, publicId) => {
   }
 };
 
-module.exports = { uploadGroupImage, uploadUserProfilePhoto };
+module.exports = {
+  uploadGroupImage,
+  uploadUserProfilePhoto,
+  deleteAllGroupImages,
+};
