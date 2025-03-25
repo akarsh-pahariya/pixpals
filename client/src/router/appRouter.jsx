@@ -7,6 +7,7 @@ import GroupDetails from '../pages/GroupDetails';
 import Home from '../pages/Home';
 import User from '../pages/User';
 import GroupUploads from '../pages/GroupUploads';
+import ImageUpload from '../pages/ImageUpload';
 
 const appRouter = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const appRouter = createBrowserRouter([
       {
         path: 'group/:groupId/details',
         element: <GroupDetails />,
+      },
+      {
+        path: 'group/:groupId/upload',
+        element: <ImageUpload />,
       },
       {
         path: 'login',

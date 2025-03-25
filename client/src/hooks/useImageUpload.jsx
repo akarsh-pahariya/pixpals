@@ -1,12 +1,19 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import {
+  setIsLoadingToFalse,
+  setIsLoadingToTrue,
+} from '../store/slices/loadingSlice';
 
-const useImageUpload = () => {
-  const [percentage, setPercentage] = useState(0);
+const useImageUpload = (groupId) => {
+  const API_URL = import.meta.env.VITE_API_URL;
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
+  const dispatch = useDispatch();
 
   const uploadImages = async (files) => {
+    dispatch(setIsLoadingToTrue());
     const formData = new FormData();
     files.forEach((file) => {
       formData.append('images', file);
@@ -14,14 +21,10 @@ const useImageUpload = () => {
 
     try {
       const res = await axios.post(
-        'http://localhost:3000/api/v1/image-grouping',
+        `${API_URL}/group/${groupId}/image`,
         formData,
         {
-          onUploadProgress: (progressEvent) => {
-            const { loaded, total } = progressEvent;
-            const percent = Math.round((loaded / total) * 100);
-            setPercentage(percent);
-          },
+          withCredentials: true,
           headers: { 'Content-Type': 'multipart/form-data' },
         }
       );
@@ -29,12 +32,14 @@ const useImageUpload = () => {
       setResponse(res.data);
       setError(null);
     } catch (err) {
-      setError(err);
+      setError(err.response.data);
       setResponse(null);
+    } finally {
+      dispatch(setIsLoadingToFalse());
     }
   };
 
-  return { uploadImages, percentage, response, error };
+  return { uploadImages, response, error };
 };
 
 export default useImageUpload;

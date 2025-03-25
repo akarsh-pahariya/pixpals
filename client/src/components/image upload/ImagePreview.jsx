@@ -1,6 +1,6 @@
 import { X } from 'lucide-react';
 
-const FilePreview = ({ files, setFiles }) => {
+const ImagePreview = ({ files, setFiles }) => {
   const handleRemoveImage = (index) => {
     setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
@@ -48,4 +48,4 @@ const FilePreview = ({ files, setFiles }) => {
   );
 };
 
-export default FilePreview;
+export default ImagePreview;

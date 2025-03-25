@@ -1,4 +1,4 @@
-const FileInfo = ({ file }) => {
+const ImageInfo = ({ file }) => {
   return (
     <div>
       <p>File Size: {file}</p>
@@ -7,4 +7,4 @@ const FileInfo = ({ file }) => {
   );
 };
 
-export default FileInfo;
+export default ImageInfo;

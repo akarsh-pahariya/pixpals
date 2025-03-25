@@ -1,6 +1,6 @@
 import ProgressBar from '@ramonak/react-progress-bar';
 
-const FileUploadProgressBar = ({ percentage }) => {
+const ImageUploadProgressBar = ({ percentage }) => {
   return (
     <div className="mt-6">
       <ProgressBar
@@ -20,4 +20,4 @@ const FileUploadProgressBar = ({ percentage }) => {
   );
 };
 
-export default FileUploadProgressBar;
+export default ImageUploadProgressBar;
