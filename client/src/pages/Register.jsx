@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ToastContainer } from 'react-toastify';
 import { showErrorToast, showSuccessToast } from '../components/ui/Toast';
 import Spinner from '../components/ui/Spinner';
 import { addUserInfo } from '../store/slices/userSlice';
@@ -44,7 +43,7 @@ const Register = () => {
         confirmPassword,
       });
       dispatch(addUserInfo(userData.data.user));
-      showSuccessToast('Registration Successful !!');
+      showSuccessToast('Registration Successful!');
       navigate('/dashboard');
     } catch (error) {
       showErrorToast(error.message);
@@ -61,19 +60,12 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black bg-gradient-to-br from-black via-gray-900 to-purple-950 p-4">
-      {/* Netflix-inspired blurred gradient background */}
-      <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_25%_25%,#FF00FF,transparent_55%),radial-gradient(circle_at_75%_75%,#00FFFF,transparent_55%)]"></div>
-
-      <div className="max-w-md w-full p-8 bg-gray-900 border border-gray-800 text-white rounded-xl shadow-2xl relative backdrop-blur-sm z-10 bg-opacity-80">
-        {/* Logo with sparkle emoji */}
+    <div className="min-h-screen flex items-center justify-center bg-[#0C0C0C] p-4">
+      <div className="max-w-md w-full p-8 bg-[#181818] border border-[#2A2A2A] text-white rounded-xl shadow-lg">
         <div className="mb-6 text-center">
-          <h2 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 animate-gradient-x mb-2">
-            PixPals{' '}
-            <span className="inline-block animate-pulse text-amber-50">✨</span>
-          </h2>
-          <p className="text-gray-400 text-sm mt-2 font-medium">
-            Join the squad today 🙌
+          <h2 className="text-3xl font-bold text-white">Create an Account</h2>
+          <p className="text-gray-400 text-sm mt-2">
+            Join us and start your journey
           </p>
         </div>
 
@@ -83,7 +75,7 @@ const Register = () => {
               <User className="w-5 h-5" />
             </div>
             <input
-              className="w-full pl-10 pr-4 py-3 bg-gray-800 text-white border-0 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:outline-none transition-all shadow-lg placeholder-gray-500"
+              className="w-full pl-10 pr-4 py-3 bg-[#121212] text-white border border-[#2A2A2A] rounded-lg focus:ring-2 focus:ring-[#4C1D95] focus:outline-none transition-all placeholder-gray-500"
               placeholder="Full Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -95,7 +87,7 @@ const Register = () => {
               <AtSign className="w-5 h-5" />
             </div>
             <input
-              className="w-full pl-10 pr-4 py-3 bg-gray-800 text-white border-0 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:outline-none transition-all shadow-lg placeholder-gray-500"
+              className="w-full pl-10 pr-4 py-3 bg-[#121212] text-white border border-[#2A2A2A] rounded-lg focus:ring-2 focus:ring-[#4C1D95] focus:outline-none transition-all placeholder-gray-500"
               placeholder="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
@@ -107,7 +99,7 @@ const Register = () => {
               <Mail className="w-5 h-5" />
             </div>
             <input
-              className="w-full pl-10 pr-4 py-3 bg-gray-800 text-white border-0 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:outline-none transition-all shadow-lg placeholder-gray-500"
+              className="w-full pl-10 pr-4 py-3 bg-[#121212] text-white border border-[#2A2A2A] rounded-lg focus:ring-2 focus:ring-[#4C1D95] focus:outline-none transition-all placeholder-gray-500"
               placeholder="Email Address"
               type="email"
               value={email}
@@ -120,7 +112,7 @@ const Register = () => {
               <Lock className="w-5 h-5" />
             </div>
             <input
-              className="w-full pl-10 pr-12 py-3 bg-gray-800 text-white border-0 rounded-lg focus:ring-2 focus:ring-pink-400 focus:outline-none transition-all shadow-lg placeholder-gray-500"
+              className="w-full pl-10 pr-12 py-3 bg-[#121212] text-white border border-[#2A2A2A] rounded-lg focus:ring-2 focus:ring-[#4C1D95] focus:outline-none transition-all placeholder-gray-500"
               type={isPasswordVisible ? 'text' : 'password'}
               placeholder="Password"
               value={password}
@@ -140,7 +132,7 @@ const Register = () => {
               <Lock className="w-5 h-5" />
             </div>
             <input
-              className="w-full pl-10 pr-12 py-3 bg-gray-800 text-white border-0 rounded-lg focus:ring-2 focus:ring-pink-400 focus:outline-none transition-all shadow-lg placeholder-gray-500"
+              className="w-full pl-10 pr-12 py-3 bg-[#121212] text-white border border-[#2A2A2A] rounded-lg focus:ring-2 focus:ring-[#4C1D95] focus:outline-none transition-all placeholder-gray-500"
               type={isConfirmPasswordVisible ? 'text' : 'password'}
               placeholder="Confirm Password"
               value={confirmPassword}
@@ -157,7 +149,7 @@ const Register = () => {
 
           <button
             type="submit"
-            className="w-full py-4 mt-2 font-bold rounded-lg text-white bg-cyan-500 hover:bg-cyan-600 transition-all duration-300 shadow-lg shadow-cyan-500/20 transform hover:scale-105"
+            className="w-full py-3 mt-2 font-bold rounded-lg text-white bg-[#4C1D95] hover:bg-[#5B21B6] transition-all duration-300 shadow-lg"
           >
             <div className="flex items-center justify-center gap-2">
               <UserPlus className="w-5 h-5" /> Create Account
@@ -169,13 +161,12 @@ const Register = () => {
           <p className="text-gray-400 text-sm">Already have an account?</p>
           <Link
             to="/login"
-            className="text-sm font-bold py-2 px-4 rounded-full bg-gray-800 hover:bg-gray-700 text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400 hover:from-pink-300 hover:to-purple-300 transition-all border border-gray-700 hover:border-gray-600"
+            className="text-sm font-bold py-2 px-4 rounded-lg bg-[#2A2A2A] hover:bg-[#3A3A3A] text-white transition-all"
           >
-            Login 🚀
+            Login
           </Link>
         </div>
 
-        <ToastContainer />
         {loading && <Spinner />}
       </div>
     </div>

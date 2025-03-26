@@ -45,25 +45,20 @@ const CreateGroupModal = ({ isOpen, onClose, onSubmit }) => {
   return (
     <div
       id="modal-backdrop"
-      className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4"
+      className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4"
       onClick={handleBackdropClick}
     >
-      <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_25%_25%,#FF00FF,transparent_55%),radial-gradient(circle_at_75%_75%,#00FFFF,transparent_55%)]"></div>
-
       <div
-        className="bg-gray-900 border border-gray-800 p-6 rounded-xl shadow-2xl w-full max-w-md text-white backdrop-blur-sm bg-opacity-80 relative z-10"
+        className="bg-[#181818] border border-[#2A2A2A] p-6 rounded-xl shadow-lg w-full max-w-md text-white relative z-10"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400">
-            Create New Group{' '}
-            <span className="inline-block animate-pulse">✨</span>
-          </h2>
+          <h2 className="text-xl font-bold text-white">Create New Group</h2>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-white transition-colors"
           >
-            <X className="w-5 h-5" />
+            <X className="w-6 h-6" />
           </button>
         </div>
 
@@ -84,7 +79,7 @@ const CreateGroupModal = ({ isOpen, onClose, onSubmit }) => {
                 id="groupName"
                 value={groupName}
                 onChange={(e) => setGroupName(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-gray-800 text-white border-0 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:outline-none transition-all shadow-lg placeholder-gray-500"
+                className="w-full pl-10 pr-4 py-3 bg-[#121212] text-white border border-[#2A2A2A] rounded-lg focus:ring-2 focus:ring-[#4C1D95] focus:outline-none transition-all"
                 placeholder="Enter group name"
                 required
               />
@@ -109,14 +104,14 @@ const CreateGroupModal = ({ isOpen, onClose, onSubmit }) => {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  className="w-full pl-10 pr-4 py-3 bg-gray-800 text-white border-0 rounded-l-lg focus:ring-2 focus:ring-pink-400 focus:outline-none transition-all shadow-lg placeholder-gray-500"
+                  className="w-full pl-10 pr-4 py-3 bg-[#121212] text-white border border-[#2A2A2A] rounded-l-lg focus:ring-2 focus:ring-[#4C1D95] focus:outline-none transition-all"
                   placeholder="Enter username"
                 />
               </div>
               <button
                 type="button"
                 onClick={handleAddUser}
-                className="px-4 bg-pink-500 text-white rounded-r-lg hover:bg-pink-600 transition-all shadow-lg flex items-center justify-center"
+                className="px-4 bg-[#4C1D95] text-white rounded-r-lg hover:bg-[#5B21B6] transition-all"
               >
                 <Plus className="w-5 h-5" />
               </button>
@@ -129,9 +124,9 @@ const CreateGroupModal = ({ isOpen, onClose, onSubmit }) => {
                 {usersList.map((user, index) => (
                   <div
                     key={index}
-                    className="flex items-center bg-gray-800 px-3 py-1 rounded-full border border-gray-700"
+                    className="flex items-center bg-[#121212] px-3 py-1 rounded-full border border-[#2A2A2A]"
                   >
-                    <span className="text-sm text-gray-200">{user}</span>
+                    <span className="text-sm text-gray-300">{user}</span>
                     <button
                       type="button"
                       onClick={() => handleRemoveUser(user)}
@@ -149,14 +144,14 @@ const CreateGroupModal = ({ isOpen, onClose, onSubmit }) => {
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-3 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 transition-all border border-gray-700"
+              className="px-4 py-3 bg-[#121212] text-gray-300 rounded-lg hover:bg-[#2A2A2A] transition-all border border-[#2A2A2A]"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={groupName.trim() === ''}
-              className="px-5 py-3 font-bold rounded-lg text-white bg-cyan-500 hover:bg-cyan-600 transition-all duration-300 shadow-lg shadow-cyan-500/20 transform hover:scale-105 disabled:opacity-50 disabled:hover:scale-100 disabled:shadow-none"
+              className="px-5 py-3 font-bold rounded-lg text-white bg-[#4C1D95] hover:bg-[#5B21B6] transition-all shadow-lg shadow-[#4C1D95]/30"
             >
               Create Group
             </button>

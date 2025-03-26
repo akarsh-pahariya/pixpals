@@ -1,8 +1,6 @@
-// Main page component
 import { useEffect, useState } from 'react';
 import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { ArrowLeft } from 'lucide-react';
 import Spinner from '../components/ui/Spinner';
 import useGroupUploads from '../hooks/useGroupUploads';
 import useGroups from '../hooks/useGroups';
@@ -130,26 +128,22 @@ const GroupUploads = () => {
   if (loading || !currentGroup || !imageData) return <Spinner />;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black bg-gradient-to-br from-black via-gray-900 to-purple-950 p-4">
-      <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_25%_25%,#FF00FF,transparent_55%),radial-gradient(circle_at_75%_75%,#00FFFF,transparent_55%)]"></div>
-      <div className="w-full max-w-5xl p-8 bg-gray-900 border border-gray-800 text-white rounded-xl shadow-2xl relative backdrop-blur-sm z-10 bg-opacity-80">
+    <div className="min-h-screen flex items-center justify-center bg-[#0C0C0C] p-4">
+      <div className="w-full max-w-5xl p-8 bg-[#181818] border border-[#2A2A2A] text-white rounded-xl shadow-lg">
         <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
           <div className="mb-4 sm:mb-0 text-center sm:text-left">
-            <h1 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 animate-gradient-x mb-2">
-              {currentGroup.name}{' '}
-              <span className="inline-block animate-pulse">✨</span>
+            <h1 className="text-xl font-bold text-white">
+              {currentGroup.name}
             </h1>
-            <p className="text-gray-400 text-sm mt-2 font-medium">
-              View and share images with your PixPals group 📸
+            <p className="text-gray-400 text-sm mt-2">
+              View and share images with your group
             </p>
           </div>
           <Link
             to="/dashboard"
-            className="px-5 py-3 rounded-lg text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 transition-all duration-300 shadow-lg shadow-purple-500/20 transform hover:scale-105"
+            className="px-5 py-3 rounded-lg text-white bg-[#4C1D95] hover:bg-[#5B21B6] transition-all duration-200"
           >
-            <div className="flex items-center justify-center gap-2">
-              <ArrowLeft className="w-5 h-5" /> Back to Dashboard
-            </div>
+            Back to Dashboard
           </Link>
         </div>
 

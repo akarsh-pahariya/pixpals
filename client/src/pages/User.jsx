@@ -123,10 +123,8 @@ const User = () => {
   if (loading || !user) return <Spinner />;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black bg-gradient-to-br from-black via-gray-900 to-purple-950 p-4">
-      <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_25%_25%,#FF00FF,transparent_55%),radial-gradient(circle_at_75%_75%,#00FFFF,transparent_55%)]"></div>
-
-      <div className="w-full max-w-3xl p-8 bg-gray-900 border border-gray-800 text-white rounded-xl shadow-2xl relative backdrop-blur-sm z-10 bg-opacity-80">
+    <div className="py-10 flex items-center justify-center bg-[#0C0C0C] p-4">
+      <div className="w-full max-w-3xl p-8 bg-[#181818] border border-[#2A2A2A] text-white rounded-xl shadow-lg">
         <div className="flex justify-between items-center mb-8">
           <Link
             to="/dashboard"
@@ -140,7 +138,7 @@ const User = () => {
             {!isEditing && (
               <button
                 onClick={() => setIsEditing(true)}
-                className="px-4 py-2 rounded-lg text-white bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 transition-all duration-300 shadow-lg shadow-purple-500/20 flex items-center"
+                className="px-4 py-2 rounded-lg text-white bg-[#4C1D95] hover:bg-[#5B21B6] transition-all duration-200 shadow-lg shadow-[#4C1D95]/30 flex items-center"
               >
                 <Edit className="w-4 h-4 mr-2" />
                 Edit Profile
@@ -149,7 +147,7 @@ const User = () => {
 
             <button
               onClick={handleLogout}
-              className="px-4 py-2 rounded-lg text-white bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 transition-all duration-300 shadow-lg shadow-red-500/20 flex items-center"
+              className="px-4 py-2 rounded-lg text-white bg-[#D32F2F] hover:bg-[#B71C1C] transition-all duration-200 shadow-lg shadow-[#D32F2F]/30 flex items-center"
             >
               <LogOut className="w-4 h-4 mr-2" />
               Logout

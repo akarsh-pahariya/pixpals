@@ -6,11 +6,11 @@ import Spinner from '../components/ui/Spinner';
 import { addUserInfo } from '../store/slices/userSlice';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
+import { Lock, LogIn, UserCheck } from 'lucide-react';
 import {
   setIsLoadingToFalse,
   setIsLoadingToTrue,
 } from '../store/slices/loadingSlice';
-import { Lock, LogIn, UserCheck } from 'lucide-react';
 
 const Login = () => {
   useAuth();
@@ -41,17 +41,12 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black bg-gradient-to-br from-black via-gray-900 to-purple-950 p-4">
-      <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_25%_25%,#FF00FF,transparent_55%),radial-gradient(circle_at_75%_75%,#00FFFF,transparent_55%)]"></div>
-
-      <div className="max-w-md w-full p-8 bg-gray-900 border border-gray-800 text-white rounded-xl shadow-2xl relative backdrop-blur-sm z-10 bg-opacity-80">
+    <div className="min-h-screen flex items-center justify-center bg-[#0C0C0C] p-4">
+      <div className="max-w-md w-full p-8 bg-[#181818] border border-[#2A2A2A] text-white rounded-xl shadow-lg">
         <div className="mb-6 text-center">
-          <h2 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 animate-gradient-x mb-2">
-            PixPals{' '}
-            <span className="inline-block animate-pulse text-amber-50">✨</span>
-          </h2>
-          <p className="text-gray-400 text-sm mt-2 font-medium">
-            Ready to vibe with the crew? 💯
+          <h2 className="text-3xl font-bold text-white">Welcome Back!</h2>
+          <p className="text-gray-400 text-sm mt-2">
+            Login to access your account
           </p>
         </div>
 
@@ -61,7 +56,7 @@ const Login = () => {
               <UserCheck className="w-5 h-5" />
             </div>
             <input
-              className="w-full pl-10 pr-4 py-3 bg-gray-800 text-white border-0 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:outline-none transition-all shadow-lg placeholder-gray-500"
+              className="w-full pl-10 pr-4 py-3 bg-[#121212] text-white border border-[#2A2A2A] rounded-lg focus:ring-2 focus:ring-[#4C1D95] focus:outline-none transition-all placeholder-gray-500"
               placeholder="Username"
               onChange={(e) => setUsername(e.target.value)}
             />
@@ -72,7 +67,7 @@ const Login = () => {
               <Lock className="w-5 h-5" />
             </div>
             <input
-              className="w-full pl-10 pr-12 py-3 bg-gray-800 text-white border-0 rounded-lg focus:ring-2 focus:ring-pink-400 focus:outline-none transition-all shadow-lg placeholder-gray-500"
+              className="w-full pl-10 pr-12 py-3 bg-[#121212] text-white border border-[#2A2A2A] rounded-lg focus:ring-2 focus:ring-[#4C1D95] focus:outline-none transition-all placeholder-gray-500"
               type={isPasswordVisible ? 'text' : 'password'}
               placeholder="Password"
               onChange={(e) => setPassword(e.target.value)}
@@ -88,7 +83,7 @@ const Login = () => {
 
           <button
             type="submit"
-            className="w-full py-4 mt-2 font-bold rounded-lg text-white bg-cyan-500 hover:bg-cyan-600 transition-all duration-300 shadow-lg shadow-cyan-500/20 transform hover:scale-105"
+            className="w-full py-3 mt-2 font-bold rounded-lg text-white bg-[#4C1D95] hover:bg-[#5B21B6] transition-all duration-300 shadow-lg"
           >
             <div className="flex items-center justify-center gap-2">
               <LogIn className="w-5 h-5" /> Login
@@ -97,12 +92,12 @@ const Login = () => {
         </form>
 
         <div className="flex items-center justify-center gap-3 mt-6">
-          <p className="text-gray-400 text-sm">First time here?</p>
+          <p className="text-gray-400 text-sm">New here?</p>
           <Link
             to="/register"
-            className="text-sm font-bold py-2 px-4 rounded-full bg-gray-800 hover:bg-gray-700 text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400 hover:from-pink-300 hover:to-purple-300 transition-all border border-gray-700 hover:border-gray-600"
+            className="text-sm font-bold py-2 px-4 rounded-lg bg-[#2A2A2A] hover:bg-[#3A3A3A] text-white transition-all"
           >
-            Create Account 🔥
+            Create Account
           </Link>
         </div>
 

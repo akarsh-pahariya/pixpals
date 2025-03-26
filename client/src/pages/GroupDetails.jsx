@@ -52,7 +52,7 @@ const GroupDetailsPage = () => {
     dispatch(setIsLoadingToTrue());
     try {
       await sendInvitation(groupId, inviteUsersList);
-      showSuccessToast('Invitations has been sent to all the valid usernames');
+      showSuccessToast('Invitations have been sent to all the valid usernames');
     } catch (error) {
       showErrorToast(error.message);
     }
@@ -90,10 +90,8 @@ const GroupDetailsPage = () => {
   if (loading || !groupData || !adminData || !usersData) return <Spinner />;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black bg-gradient-to-br from-black via-gray-900 to-purple-950 p-4">
-      <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_25%_25%,#FF00FF,transparent_55%),radial-gradient(circle_at_75%_75%,#00FFFF,transparent_55%)]"></div>
-
-      <div className="w-full max-w-5xl p-8 bg-gray-900 border border-gray-800 text-white rounded-xl shadow-2xl relative backdrop-blur-sm z-10 bg-opacity-80">
+    <div className="min-h-screen flex items-center justify-center bg-[#0C0C0C] p-4">
+      <div className="w-full max-w-5xl p-8 bg-[#181818] border border-[#2A2A2A] text-white rounded-xl shadow-lg">
         <GroupHeader groupName={groupData.groupName} />
         <GroupInfo groupData={groupData} />
         <AdminInfo

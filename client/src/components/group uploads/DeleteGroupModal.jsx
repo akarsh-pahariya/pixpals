@@ -19,33 +19,33 @@ const DeleteGroupModal = ({ groupName, onConfirm, onCancel }) => {
       ></div>
 
       <div
-        className="relative z-10 bg-gray-900/90 border border-gray-700 rounded-xl p-6 w-full max-w-md shadow-xl"
+        className="relative z-10 bg-[#181818] border border-[#2A2A2A] rounded-xl p-6 w-full max-w-md shadow-lg"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center mb-4">
-          <div className="w-12 h-12 flex items-center justify-center rounded-full bg-red-500/20 mr-4">
-            <AlertTriangle className="w-6 h-6 text-red-500" />
+          <div className="w-12 h-12 flex items-center justify-center rounded-full bg-[#4C1D95]/20 mr-4">
+            <AlertTriangle className="w-6 h-6 text-[#4C1D95]" />
           </div>
           <div>
             <h3 className="text-xl font-bold text-white">Delete Group?</h3>
           </div>
         </div>
 
-        <p className="text-white mb-6 text-center">
+        <p className="text-gray-300 mb-6 text-center">
           Are you sure you want to delete{' '}
-          <span className="text-pink-500 font-medium">{groupName}</span>?
+          <span className="text-[#4C1D95] font-medium">{groupName}</span>?
         </p>
 
         <div className="flex gap-4">
           <button
             onClick={onCancel}
-            className="flex-1 py-3 px-4 rounded-lg text-white border border-gray-600 hover:bg-gray-800 transition-colors"
+            className="flex-1 py-3 px-4 rounded-lg text-white border border-gray-600 hover:bg-[#2A2A2A] transition-colors"
           >
             Cancel
           </button>
           <button
             onClick={onConfirm}
-            className="flex-1 py-3 px-4 rounded-lg text-white bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 transition-all shadow-lg shadow-red-500/20"
+            className="flex-1 py-3 px-4 rounded-lg text-white bg-[#D32F2F] hover:bg-[#B71C1C] transition-all shadow-lg shadow-[#D32F2F]/30"
           >
             Delete Group
           </button>

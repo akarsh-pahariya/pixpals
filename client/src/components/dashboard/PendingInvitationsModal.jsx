@@ -19,24 +19,20 @@ const PendingInvitationsModal = ({
   return (
     <div
       id="modal-backdrop"
-      className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4"
+      className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4"
       onClick={handleBackdropClick}
     >
-      <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_25%_25%,#FF00FF,transparent_55%),radial-gradient(circle_at_75%_75%,#00FFFF,transparent_55%)]"></div>
-
       <div
-        className="bg-gray-900 border border-gray-800 p-6 rounded-xl shadow-2xl w-full max-w-md text-white backdrop-blur-sm bg-opacity-80 relative z-10"
+        className="bg-[#181818] border border-[#2A2A2A] p-6 rounded-xl shadow-lg w-full max-w-md text-white relative z-10"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400">
-            <div className="flex items-center gap-2">Pending Invitations</div>
-          </h2>
+          <h2 className="text-xl font-bold text-white">Pending Invitations</h2>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-white transition-colors"
           >
-            <X className="w-5 h-5" />
+            <X className="w-6 h-6" />
           </button>
         </div>
 
@@ -54,20 +50,18 @@ const PendingInvitationsModal = ({
               ({ id, group, senderUsername, invitationDate }) => (
                 <li
                   key={id}
-                  className="p-4 bg-gray-800 rounded-lg border border-gray-700 shadow-md"
+                  className="p-4 bg-[#121212] rounded-lg border border-[#2A2A2A] shadow-md"
                 >
                   <div className="flex justify-between items-start mb-2">
                     <div className="flex items-center gap-2">
-                      <UserPlus className="w-5 h-5 text-cyan-400" />
-                      <p className="text-white font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400">
-                        {group.name}
-                      </p>
+                      <UserPlus className="w-5 h-5 text-[#4C1D95]" />
+                      <p className="text-white font-bold">{group.name}</p>
                     </div>
                   </div>
 
                   <p className="text-gray-300 text-sm mb-1">
                     Invited by{' '}
-                    <span className="font-semibold text-cyan-300">
+                    <span className="font-semibold text-[#4C1D95]">
                       {senderUsername}
                     </span>
                   </p>
@@ -78,13 +72,13 @@ const PendingInvitationsModal = ({
                   <div className="flex gap-2 mt-3">
                     <button
                       onClick={() => onAccept(id)}
-                      className="flex-1 py-2 px-3 bg-gradient-to-r from-emerald-500 to-green-500 text-white rounded-lg hover:from-emerald-600 hover:to-green-600 transition-all shadow-lg transform hover:scale-105 flex items-center justify-center gap-1"
+                      className="flex-1 py-2 px-3 bg-[#4C1D95] text-white rounded-lg hover:bg-[#5B21B6] transition-all shadow-lg shadow-[#4C1D95]/30 flex items-center justify-center gap-1"
                     >
                       <Check className="w-4 h-4" /> Accept
                     </button>
                     <button
                       onClick={() => onReject(id)}
-                      className="flex-1 py-2 px-3 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-lg hover:from-red-600 hover:to-pink-600 transition-all shadow-lg transform hover:scale-105 flex items-center justify-center gap-1"
+                      className="flex-1 py-2 px-3 bg-[#D32F2F] text-white rounded-lg hover:bg-[#B71C1C] transition-all shadow-lg shadow-[#D32F2F]/30 flex items-center justify-center gap-1"
                     >
                       <XIcon className="w-4 h-4" /> Reject
                     </button>
@@ -97,7 +91,7 @@ const PendingInvitationsModal = ({
 
         <button
           onClick={onClose}
-          className="mt-6 w-full py-3 font-bold rounded-lg text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 transition-all duration-300 shadow-lg shadow-purple-500/20 transform hover:scale-105"
+          className="mt-6 w-full py-3 font-bold rounded-lg text-white bg-[#2A2A2A] hover:bg-[#3A3A3A] transition-all"
         >
           Close
         </button>
