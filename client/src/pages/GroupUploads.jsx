@@ -61,7 +61,7 @@ const GroupUploads = () => {
 
   const handlePostImage = () => {
     const currentPath = location.pathname;
-    navigate(`${currentPath}upload`);
+    navigate(`${currentPath}/upload`);
   };
 
   const handleLeaveGroup = () => {
