@@ -60,8 +60,8 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0C0C0C] p-4">
-      <div className="max-w-md w-full p-8 bg-[#181818] border border-[#2A2A2A] text-white rounded-xl shadow-lg">
+    <div className="flex items-center justify-center bg-[#0C0C0C] p-15">
+      <div className="max-w-3xl w-full p-8 bg-[#181818] border border-[#2A2A2A] text-white rounded-xl shadow-lg">
         <div className="mb-6 text-center">
           <h2 className="text-3xl font-bold text-white">Create an Account</h2>
           <p className="text-gray-400 text-sm mt-2">
@@ -69,31 +69,35 @@ const Register = () => {
           </p>
         </div>
 
-        <form className="space-y-4" onSubmit={handleRegister}>
-          <div className="relative">
-            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-              <User className="w-5 h-5" />
+        <form className="space-y-6" onSubmit={handleRegister}>
+          {/* Full Name and Username Fields */}
+          <div className="flex gap-6">
+            <div className="relative flex-1">
+              <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                <User className="w-5 h-5" />
+              </div>
+              <input
+                className="w-full pl-10 pr-4 py-3 bg-[#121212] text-white border border-[#2A2A2A] rounded-lg focus:ring-2 focus:ring-[#4C1D95] focus:outline-none transition-all placeholder-gray-500"
+                placeholder="Full Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </div>
-            <input
-              className="w-full pl-10 pr-4 py-3 bg-[#121212] text-white border border-[#2A2A2A] rounded-lg focus:ring-2 focus:ring-[#4C1D95] focus:outline-none transition-all placeholder-gray-500"
-              placeholder="Full Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
+
+            <div className="relative flex-1">
+              <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                <AtSign className="w-5 h-5" />
+              </div>
+              <input
+                className="w-full pl-10 pr-4 py-3 bg-[#121212] text-white border border-[#2A2A2A] rounded-lg focus:ring-2 focus:ring-[#4C1D95] focus:outline-none transition-all placeholder-gray-500"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </div>
           </div>
 
-          <div className="relative">
-            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-              <AtSign className="w-5 h-5" />
-            </div>
-            <input
-              className="w-full pl-10 pr-4 py-3 bg-[#121212] text-white border border-[#2A2A2A] rounded-lg focus:ring-2 focus:ring-[#4C1D95] focus:outline-none transition-all placeholder-gray-500"
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </div>
-
+          {/* Email Field */}
           <div className="relative">
             <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
               <Mail className="w-5 h-5" />
@@ -107,49 +111,53 @@ const Register = () => {
             />
           </div>
 
-          <div className="relative">
-            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-              <Lock className="w-5 h-5" />
+          {/* Password and Confirm Password Fields */}
+          <div className="flex gap-6">
+            <div className="relative flex-1">
+              <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                <Lock className="w-5 h-5" />
+              </div>
+              <input
+                className="w-full pl-10 pr-12 py-3 bg-[#121212] text-white border border-[#2A2A2A] rounded-lg focus:ring-2 focus:ring-[#4C1D95] focus:outline-none transition-all placeholder-gray-500"
+                type={isPasswordVisible ? 'text' : 'password'}
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+              >
+                {isPasswordVisible ? 'Hide' : 'Show'}
+              </button>
             </div>
-            <input
-              className="w-full pl-10 pr-12 py-3 bg-[#121212] text-white border border-[#2A2A2A] rounded-lg focus:ring-2 focus:ring-[#4C1D95] focus:outline-none transition-all placeholder-gray-500"
-              type={isPasswordVisible ? 'text' : 'password'}
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <button
-              type="button"
-              onClick={togglePasswordVisibility}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
-            >
-              {isPasswordVisible ? 'Hide' : 'Show'}
-            </button>
+
+            <div className="relative flex-1">
+              <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                <Lock className="w-5 h-5" />
+              </div>
+              <input
+                className="w-full pl-10 pr-12 py-3 bg-[#121212] text-white border border-[#2A2A2A] rounded-lg focus:ring-2 focus:ring-[#4C1D95] focus:outline-none transition-all placeholder-gray-500"
+                type={isConfirmPasswordVisible ? 'text' : 'password'}
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+              <button
+                type="button"
+                onClick={toggleConfirmPasswordVisibility}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+              >
+                {isConfirmPasswordVisible ? 'Hide' : 'Show'}
+              </button>
+            </div>
           </div>
 
-          <div className="relative">
-            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-              <Lock className="w-5 h-5" />
-            </div>
-            <input
-              className="w-full pl-10 pr-12 py-3 bg-[#121212] text-white border border-[#2A2A2A] rounded-lg focus:ring-2 focus:ring-[#4C1D95] focus:outline-none transition-all placeholder-gray-500"
-              type={isConfirmPasswordVisible ? 'text' : 'password'}
-              placeholder="Confirm Password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-            <button
-              type="button"
-              onClick={toggleConfirmPasswordVisibility}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
-            >
-              {isConfirmPasswordVisible ? 'Hide' : 'Show'}
-            </button>
-          </div>
-
+          {/* Submit Button */}
           <button
             type="submit"
-            className="w-full py-3 mt-2 font-bold rounded-lg text-white bg-[#4C1D95] hover:bg-[#5B21B6] transition-all duration-300 shadow-lg"
+            className="w-full py-3 font-bold rounded-lg text-white bg-[#4C1D95] hover:bg-[#5B21B6] transition-all duration-300 shadow-lg"
           >
             <div className="flex items-center justify-center gap-2">
               <UserPlus className="w-5 h-5" /> Create Account
@@ -157,6 +165,7 @@ const Register = () => {
           </button>
         </form>
 
+        {/* Login Link */}
         <div className="flex items-center justify-center gap-3 mt-6">
           <p className="text-gray-400 text-sm">Already have an account?</p>
           <Link

@@ -90,7 +90,7 @@ const GroupDetailsPage = () => {
   if (loading || !groupData || !adminData || !usersData) return <Spinner />;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0C0C0C] p-4">
+    <div className="py-15 flex items-center justify-center bg-[#0C0C0C] p-4">
       <div className="w-full max-w-5xl p-8 bg-[#181818] border border-[#2A2A2A] text-white rounded-xl shadow-lg">
         <GroupHeader groupName={groupData.groupName} />
         <GroupInfo groupData={groupData} />

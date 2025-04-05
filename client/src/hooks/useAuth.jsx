@@ -28,7 +28,6 @@ const useAuth = () => {
           }
         }
       } catch (error) {
-        console.log('User not authenticated', error);
         if (location.pathname !== '/login') {
           navigate('/login');
           showErrorToast(
@@ -40,7 +39,7 @@ const useAuth = () => {
     };
 
     if (!isLoggedIn) checkUserAuthentication();
-  }, [dispatch, navigate, isLoggedIn, location]);
+  }, [dispatch, navigate, location]);
 };
 
 export default useAuth;

@@ -128,7 +128,7 @@ const GroupUploads = () => {
   if (loading || !currentGroup || !imageData) return <Spinner />;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0C0C0C] p-4">
+    <div className="py-15 flex items-center justify-center bg-[#0C0C0C] p-4">
       <div className="w-full max-w-5xl p-8 bg-[#181818] border border-[#2A2A2A] text-white rounded-xl shadow-lg">
         <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
           <div className="mb-4 sm:mb-0 text-center sm:text-left">

@@ -23,7 +23,7 @@ const Footer = () => {
         </div>
 
         <div className="flex space-x-6 text-md">
-          Made with 💖 by&nbsp;
+          Made by&nbsp;
           <Link
             to="https://github.com/akarsh-pahariya/multi-face-identifier"
             className="hover:text-gray-300 transition-colors"

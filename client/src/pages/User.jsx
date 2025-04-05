@@ -123,7 +123,7 @@ const User = () => {
   if (loading || !user) return <Spinner />;
 
   return (
-    <div className="py-10 flex items-center justify-center bg-[#0C0C0C] p-4">
+    <div className="py-15 flex items-center justify-center bg-[#0C0C0C] p-4">
       <div className="w-full max-w-3xl p-8 bg-[#181818] border border-[#2A2A2A] text-white rounded-xl shadow-lg">
         <div className="flex justify-between items-center mb-8">
           <Link

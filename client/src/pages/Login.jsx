@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../services/authService';
 import { showErrorToast, showSuccessToast } from '../components/ui/Toast';
@@ -18,8 +18,13 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const loading = useSelector((state) => state.loading.isLoading);
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isLoggedIn) navigate('/dashboard');
+  }, [isLoggedIn, navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -40,8 +45,10 @@ const Login = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };
 
+  if (loading) <Spinner />;
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0C0C0C] p-4">
+    <div className="py-15 flex items-center justify-center bg-[#0C0C0C] p-4">
       <div className="max-w-md w-full p-8 bg-[#181818] border border-[#2A2A2A] text-white rounded-xl shadow-lg">
         <div className="mb-6 text-center">
           <h2 className="text-3xl font-bold text-white">Welcome Back!</h2>
@@ -100,8 +107,6 @@ const Login = () => {
             Create Account
           </Link>
         </div>
-
-        {loading && <Spinner />}
       </div>
     </div>
   );
