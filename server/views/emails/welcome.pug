@@ -1,17 +1,30 @@
 extends baseEmail
 
 block content
-  p Hi #{firstName},
-  p Welcome to Remember, we're glad to have you 🎉🙏
-  p We're all a big familiy here, so make sure to upload your user photo so we get to know you a bit better!
-  table.btn.btn-primary(role='presentation', border='0', cellpadding='0', cellspacing='0')
-    tbody
-      tr
-        td(align='left')
-          table(role='presentation', border='0', cellpadding='0', cellspacing='0')
-            tbody
-              tr
-                td
-                  a(href=`${url}`, target='_blank') Upload user photo
-  p If you need any help with usage of this web based application, please don't hesitate to contact me!
-  p - Akarsh Pahariya, Application Developer
+  .welcome-content
+    p.greeting Hi #{firstName},
+    p.welcome-message Welcome to PixPals! 🎉 We're excited to have you join our community.
+    
+    .feature-section
+      p.section-title What you can do with PixPals:
+      ul.feature-list
+        li Create and manage groups with friends
+        li Upload images with automatic face detection
+        li Share memories securely with your groups
+        li Access your content from anywhere, anytime
+    
+    .action-section
+      table.btn.btn-primary(role='presentation', border='0', cellpadding='0', cellspacing='0')
+        tbody
+          tr
+            td(align='left')
+              table(role='presentation', border='0', cellpadding='0', cellspacing='0')
+                tbody
+                  tr
+                    td
+                      a(href=`${url}`, target='_blank') Get Started Now
+    
+    .closing
+      p Need help? Our support team is always here to assist you.
+      p.signature Best regards,
+      p.team-signature The PixPals Team

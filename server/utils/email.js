@@ -43,7 +43,7 @@ class Email {
   }
 
   async sendWelcome() {
-    await this.send('welcome', 'Welcome to the world of notes with Remember!');
+    await this.send('welcome', 'Welcome to the pixpals!');
   }
 
   async sendPasswordReset() {
