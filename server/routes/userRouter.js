@@ -3,6 +3,7 @@ const {
   register,
   login,
   verifyUser,
+  forgotPassword,
 } = require('../controllers/authController');
 const { protect } = require('../middlewares/authMiddleware');
 const { upload } = require('../middlewares/multerMiddleware');
@@ -27,6 +28,7 @@ Router.route('/')
 Router.route('/login').post(login);
 Router.route('/register').post(register);
 Router.route('/changePassword').post(protect, changePassword);
+Router.route('/forgot-password').post(forgotPassword);
 Router.route('/logout').get(protect, logout);
 
 module.exports = Router;

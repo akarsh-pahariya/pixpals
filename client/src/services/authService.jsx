@@ -107,3 +107,21 @@ export const logout = async () => {
     }
   }
 };
+
+export const userForgetsPassword = async (user) => {
+  try {
+    const response = await axios.post(`${USER_API_URL}/forgot-password`, user);
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      throw new Error(
+        error.response.data.message ||
+          'Cannot process your password change request now'
+      );
+    } else if (error.request) {
+      throw new Error('Unable to reach the server. Please try again.');
+    } else {
+      throw new Error('Something went wrong. Please try again.');
+    }
+  }
+};

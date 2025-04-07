@@ -8,6 +8,8 @@ import Home from '../pages/Home';
 import User from '../pages/User';
 import GroupUploads from '../pages/GroupUploads';
 import ImageUpload from '../pages/ImageUpload';
+import ForgotPassword from '../pages/forgotPassword';
+import ResetPassword from '../pages/resetPassword';
 
 const appRouter = createBrowserRouter([
   {
@@ -37,6 +39,14 @@ const appRouter = createBrowserRouter([
       {
         path: 'login',
         element: <Login />,
+      },
+      {
+        path: 'forgot-password',
+        element: <ForgotPassword />,
+      },
+      {
+        path: 'reset-password/:token',
+        element: <ResetPassword />,
       },
       {
         path: 'register',

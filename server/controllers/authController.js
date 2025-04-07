@@ -66,6 +66,44 @@ const register = async (req, res, next) => {
   }
 };
 
+const forgotPassword = async (req, res, next) => {
+  try {
+    const { username, email } = req.body;
+    const user = await User.findOne({ email, username });
+
+    if (!user)
+      return next(
+        new AppError('Cant find a user with the given username and password')
+      );
+    const token = await user.createPasswordResetToken();
+    await user.save({ validateBeforeSave: false });
+
+    try {
+      const url = `${process.env.FRONTEND_URL}/reset-password/${token}`;
+      await new Email(user, url).sendPasswordReset();
+
+      res.status(200).json({
+        status: 'success',
+        message:
+          'Password change email has been sent to the provided email address',
+      });
+    } catch (error) {
+      user.passwordResetExpires = undefined;
+      user.passwordResetToken = undefined;
+      await user.save({ validateBeforeSave: false });
+
+      return next(
+        new AppError(
+          'An error occured while sending email, please try again later',
+          500
+        )
+      );
+    }
+  } catch (error) {
+    return next(new AppError(error.message, 400));
+  }
+};
+
 const verifyUser = async (req, res, next) => {
   try {
     res.status(201).json({
@@ -79,4 +117,4 @@ const verifyUser = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login, verifyUser };
+module.exports = { register, login, verifyUser, forgotPassword };

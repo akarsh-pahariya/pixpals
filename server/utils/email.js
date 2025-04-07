@@ -47,6 +47,7 @@ class Email {
   }
 
   async sendPasswordReset() {
+    console.log(this);
     await this.send(
       'passwordReset',
       'Your Password Reset Token (valid for only 10 minutes)'
