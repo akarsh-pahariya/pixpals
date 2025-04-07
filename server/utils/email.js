@@ -6,13 +6,14 @@ class Email {
     this.to = user.email;
     this.firstName = user.name.split(' ')[0];
     this.url = url;
-    this.from = `Admin@pixpals.com`;
+    this.from = `Akarsh Pahariya <pixpalsofficial@outlook.com>`;
   }
 
   newTransport() {
     return nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
       port: process.env.EMAIL_PORT,
+      secure: false,
       auth: {
         user: process.env.EMAIL_USERNAME,
         pass: process.env.EMAIL_PASSWORD,
@@ -22,7 +23,7 @@ class Email {
 
   async send(template, subject) {
     const html = pug.renderFile(
-      `${__dirname}/../Views/Emails/${template}.pug`,
+      `${__dirname}/../views/emails/${template}.pug`,
       {
         firstName: this.firstName,
         url: this.url,
@@ -52,3 +53,5 @@ class Email {
     );
   }
 }
+
+module.exports = { Email };
