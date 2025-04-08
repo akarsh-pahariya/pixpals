@@ -10,6 +10,7 @@ import GroupUploads from '../pages/GroupUploads';
 import ImageUpload from '../pages/ImageUpload';
 import ForgotPassword from '../pages/forgotPassword';
 import ResetPassword from '../pages/resetPassword';
+import DeleteImages from '../pages/DeleteImages';
 
 const appRouter = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const appRouter = createBrowserRouter([
       {
         path: 'group/:groupId',
         element: <GroupUploads />,
+      },
+      {
+        path: 'group/:groupId/delete-images',
+        element: <DeleteImages />,
       },
       {
         path: 'group/:groupId/details',

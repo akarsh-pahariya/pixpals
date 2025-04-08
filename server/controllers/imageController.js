@@ -86,4 +86,40 @@ const getGroupImages = async (req, res, next) => {
   }
 };
 
-module.exports = { handleImageUpload, getGroupImages };
+const getImagesPostedByUser = async (req, res, next) => {
+  try {
+    const { groupId } = req.params;
+    const userId = req.user._id;
+    const page = parseInt(req.query.page) || 1;
+    const limit = 100;
+
+    let filter = { groupId };
+    if (req.groupMembership.role !== 'admin') {
+      filter.userId = userId;
+    }
+
+    const totalImages = await Image.countDocuments(filter);
+    const userImages = await Image.find(filter)
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    const totalPages = Math.ceil(totalImages / limit);
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        totalPages,
+        results: userImages.length,
+        page: parseInt(page),
+        images: userImages,
+      },
+    });
+  } catch (error) {
+    return next(
+      new AppError(error.message || 'Cannot fetch images posted by you', 500)
+    );
+  }
+};
+
+module.exports = { handleImageUpload, getGroupImages, getImagesPostedByUser };
