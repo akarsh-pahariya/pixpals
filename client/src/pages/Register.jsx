@@ -59,6 +59,8 @@ const Register = () => {
     setIsConfirmPasswordVisible(!isConfirmPasswordVisible);
   };
 
+  if (loading) <Spinner />;
+
   return (
     <div className="flex items-center justify-center bg-[#0C0C0C] p-15">
       <div className="max-w-3xl w-full p-8 bg-[#181818] border border-[#2A2A2A] text-white rounded-xl shadow-lg">
@@ -175,8 +177,6 @@ const Register = () => {
             Login
           </Link>
         </div>
-
-        {loading && <Spinner />}
       </div>
     </div>
   );
