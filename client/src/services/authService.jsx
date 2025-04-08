@@ -125,3 +125,24 @@ export const userForgetsPassword = async (user) => {
     }
   }
 };
+
+export const userResetsPassword = async (token, password) => {
+  try {
+    const response = await axios.post(
+      `${USER_API_URL}/reset-password/${token}`,
+      password
+    );
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      throw new Error(
+        error.response.data.message ||
+          'Cannot process your password change request now'
+      );
+    } else if (error.request) {
+      throw new Error('Unable to reach the server. Please try again.');
+    } else {
+      throw new Error('Something went wrong. Please try again.');
+    }
+  }
+};

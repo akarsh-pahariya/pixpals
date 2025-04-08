@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import { showErrorToast, showSuccessToast } from '../components/ui/Toast';
 import Spinner from '../components/ui/Spinner';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Lock, Save } from 'lucide-react';
+import { userResetsPassword } from '../services/authService';
 
 const ResetPassword = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { token } = useParams();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -20,6 +22,10 @@ const ResetPassword = () => {
 
     setLoading(true);
     try {
+      await userResetsPassword(token, {
+        password,
+        confirmPassword,
+      });
       showSuccessToast('Password reset successful!');
       navigate('/login');
     } catch (error) {

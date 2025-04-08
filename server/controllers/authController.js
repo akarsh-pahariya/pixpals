@@ -1,7 +1,9 @@
+const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const AppError = require('../utils/appError');
 const { Email } = require('../utils/email');
+const { log } = require('console');
 
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET);
@@ -104,6 +106,38 @@ const forgotPassword = async (req, res, next) => {
   }
 };
 
+const resetPassword = async (req, res, next) => {
+  try {
+    const hashedToken = crypto
+      .createHash('sha256')
+      .update(req.params.token)
+      .digest('hex');
+
+    const user = await User.findOne({
+      passwordResetToken: hashedToken,
+      passwordResetExpires: { $gt: Date.now() },
+    });
+
+    if (!user)
+      return next(
+        new AppError('Your token is expired please try again later', 401)
+      );
+
+    user.password = req.body.password;
+    user.confirmPassword = req.body.confirmPassword;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save();
+
+    res.status(201).json({
+      status: 'success',
+      message: 'Your password has been successfully updated',
+    });
+  } catch (error) {
+    next(new AppError(error.message, 400));
+  }
+};
+
 const verifyUser = async (req, res, next) => {
   try {
     res.status(201).json({
@@ -117,4 +151,4 @@ const verifyUser = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login, verifyUser, forgotPassword };
+module.exports = { register, login, verifyUser, forgotPassword, resetPassword };
