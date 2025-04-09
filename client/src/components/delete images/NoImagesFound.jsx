@@ -8,7 +8,7 @@ const NoImagesFound = ({ groupId }) => {
         No Images Found
       </h2>
       <p className="text-gray-400 text-center mb-6">
-        There are no images uploaded to this group yet.
+        You haven't posted any images in this group yet.
       </p>
       <div className="flex gap-4">
         <Link
