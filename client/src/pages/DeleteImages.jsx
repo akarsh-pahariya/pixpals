@@ -7,6 +7,9 @@ import Spinner from '../components/ui/Spinner';
 import SelectableImageGrid from '../components/delete images/SelectableImageGrid';
 import DeleteActionButtons from '../components/delete images/DeleteActionButtons';
 import PaginationControls from '../components/group uploads/PaginationControls';
+import { deleteImagesFromGroup } from '../services/imageService';
+import { showErrorToast, showSuccessToast } from '../components/ui/Toast';
+import NoImagesFound from '../components/delete images/NoImagesFound';
 
 const DeleteImages = () => {
   useAuth();
@@ -16,8 +19,12 @@ const DeleteImages = () => {
   const [totalPages, setTotalPages] = useState(null);
   const [imageData, setImageData] = useState(null);
   const [selectedImages, setSelectedImages] = useState(new Set());
+  const [loading, setLoading] = useState(false);
 
-  const api_response = useUserGroupUploads(groupId, pageNumber);
+  const { data: api_response, refetch } = useUserGroupUploads(
+    groupId,
+    pageNumber
+  );
 
   useEffect(() => {
     if (api_response) {
@@ -47,12 +54,37 @@ const DeleteImages = () => {
     setSelectedImages(newSelection);
   };
 
-  const handleDelete = () => {
-    // This will be replaced with actual API call
-    console.log('Deleting images:', Array.from(selectedImages));
+  const handleDelete = async () => {
+    if (selectedImages.size === 0) return;
+
+    setLoading(true);
+    try {
+      const imagesArray = Array.from(selectedImages);
+      await deleteImagesFromGroup(imagesArray, groupId);
+
+      showSuccessToast('All selected images have been deleted');
+      await refetch();
+      setSelectedImages(new Set());
+    } catch (error) {
+      showErrorToast(
+        error.message || 'Unable to delete images right now, please try again'
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
-  if (!imageData) return <Spinner />;
+  if (!imageData || loading) return <Spinner />;
+
+  if (imageData.length === 0) {
+    return (
+      <div className="py-20 flex items-center justify-center bg-[#0C0C0C] p-4">
+        <div className="w-full max-w-5xl p-8 bg-[#181818] border border-[#2A2A2A] text-white rounded-xl shadow-lg">
+          <NoImagesFound groupId={groupId} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="py-15 flex items-center justify-center bg-[#0C0C0C] p-4">

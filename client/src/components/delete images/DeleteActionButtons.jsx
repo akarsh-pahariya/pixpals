@@ -12,7 +12,7 @@ const DeleteActionButtons = ({
         onClick={onSelectAll}
         className="w-full sm:w-auto px-5 py-3 rounded-lg text-white bg-gray-700 hover:bg-gray-600 transition-all duration-200"
       >
-        {selectedCount === totalCount ? 'Deselect All' : 'Select All'}(
+        {selectedCount === totalCount ? 'Deselect All ' : 'Select All '}(
         {selectedCount}/{totalCount})
       </button>
 
