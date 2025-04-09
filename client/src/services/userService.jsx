@@ -20,3 +20,5 @@ export const updateUserInfo = async (userInfo) => {
     }
   }
 };
+
+export const getUserGroupImages = async (groupId, pageNumber) => {};

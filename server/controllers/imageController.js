@@ -2,7 +2,7 @@ const path = require('path');
 const sharp = require('sharp');
 const { v4: uuidv4 } = require('uuid');
 const AppError = require('../utils/appError');
-const { uploadGroupImage } = require('../utils/cloudinary');
+const { uploadGroupImage, deleteImages } = require('../utils/cloudinary');
 const Image = require('../models/ImageModel');
 
 const handleImageUpload = async (req, res, next) => {
@@ -122,4 +122,49 @@ const getImagesPostedByUser = async (req, res, next) => {
   }
 };
 
-module.exports = { handleImageUpload, getGroupImages, getImagesPostedByUser };
+const deleteImagesPostedByUser = async (req, res, next) => {
+  try {
+    const { groupId } = req.params;
+    const userId = req.user._id;
+    const { imagesId } = req.body;
+
+    let filter = {
+      groupId,
+      _id: { $in: imagesId },
+    };
+
+    if (req.groupMembership.role !== 'admin') {
+      filter.userId = userId;
+    }
+
+    const images = await Image.find(filter).select('publicId _id');
+
+    if (!images.length) {
+      return next(new AppError('No images found to delete', 404));
+    }
+
+    const publicIds = images.map((img) => img.publicId);
+    const idsToDelete = images.map((img) => img._id);
+
+    await Promise.all([
+      deleteImages(publicIds),
+      Image.deleteMany({ _id: { $in: idsToDelete } }),
+    ]);
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Images deleted successfully from cloud and database',
+    });
+  } catch (error) {
+    return next(
+      new AppError(error.message || 'Cannot delete images right now', 500)
+    );
+  }
+};
+
+module.exports = {
+  handleImageUpload,
+  getGroupImages,
+  getImagesPostedByUser,
+  deleteImagesPostedByUser,
+};

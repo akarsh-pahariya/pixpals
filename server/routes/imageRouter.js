@@ -3,6 +3,7 @@ const {
   handleImageUpload,
   getGroupImages,
   getImagesPostedByUser,
+  deleteImagesPostedByUser,
 } = require('../controllers/imageController');
 const router = express.Router({ mergeParams: true });
 const { upload } = require('../middlewares/multerMiddleware');
@@ -21,6 +22,12 @@ router
     });
   })
   .get('/', protect, requireGroupMembership, getGroupImages)
-  .get('/user', protect, requireGroupMembership, getImagesPostedByUser);
+  .get('/user', protect, requireGroupMembership, getImagesPostedByUser)
+  .post(
+    '/user/delete',
+    protect,
+    requireGroupMembership,
+    deleteImagesPostedByUser
+  );
 
 module.exports = router;

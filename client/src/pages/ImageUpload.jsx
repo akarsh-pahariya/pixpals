@@ -5,8 +5,10 @@ import ImagePreview from '../components/image upload/ImagePreview';
 import { showErrorToast, showSuccessToast } from '../components/ui/Toast';
 import Spinner from '../components/ui/Spinner';
 import { uploadImagesToGroup } from '../services/imageService';
+import useAuth from '../hooks/useAuth';
 
 const ImageUpload = () => {
+  useAuth();
   const navigate = useNavigate();
   const [files, setFiles] = useState([]);
   const [response, setResponse] = useState(null);

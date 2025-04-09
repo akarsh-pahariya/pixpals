@@ -63,6 +63,29 @@ export const getGroupImages = async (groupId, pageNumber) => {
   }
 };
 
+export const getUserGroupImages = async (groupId, pageNumber) => {
+  try {
+    const response = await axios.get(
+      `${API_URL}/group/${groupId}/image/user?page=${pageNumber}`,
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      throw new Error(
+        error.response.data.message ||
+          'Cannot get user group images at the moment, please try again'
+      );
+    } else if (error.request) {
+      throw new Error('Unable to reach the server. Please try again.');
+    } else {
+      throw new Error('Something went wrong. Please try again.');
+    }
+  }
+};
+
 export const getGroupDetails = async (groupId) => {
   try {
     const response = await axios.get(`${API_URL}/group/${groupId}/details`, {
