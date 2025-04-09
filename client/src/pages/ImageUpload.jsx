@@ -37,7 +37,7 @@ const ImageUpload = () => {
 
   useEffect(() => {
     if (response?.status === 'success') {
-      showSuccessToast('Image has been successfully uploaded in the group');
+      showSuccessToast('Images have been successfully uploaded in the group');
     }
     setFiles([]);
   }, [response]);

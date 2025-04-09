@@ -14,6 +14,7 @@ export const uploadImagesToGroup = async (imageData, groupId) => {
     );
     return response.data;
   } catch (error) {
+    console.log(error);
     if (error.response) {
       throw new Error(
         error.response.data.message || 'Cannot fetch group data from the server'

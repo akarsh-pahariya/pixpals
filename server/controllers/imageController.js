@@ -100,6 +100,7 @@ const getImagesPostedByUser = async (req, res, next) => {
 
     const totalImages = await Image.countDocuments(filter);
     const userImages = await Image.find(filter)
+      .populate('userId', 'name')
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
       .limit(limit);

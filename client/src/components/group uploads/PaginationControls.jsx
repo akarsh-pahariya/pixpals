@@ -20,7 +20,7 @@ const PaginationControls = ({ pageNumber, totalPages, setPageNumber }) => {
         </button>
 
         <span className="px-4 py-2 bg-gray-800 rounded-lg border border-gray-700">
-          Page {pageNumber} of {totalPages}
+          Page {pageNumber} of {totalPages === 0 ? 1 : totalPages}
         </span>
 
         <button
