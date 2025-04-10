@@ -4,6 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 const AppError = require('../utils/appError');
 const { uploadGroupImage, deleteImages } = require('../utils/cloudinary');
 const Image = require('../models/ImageModel');
+const { log } = require('console');
 
 const handleImageUpload = async (req, res, next) => {
   try {

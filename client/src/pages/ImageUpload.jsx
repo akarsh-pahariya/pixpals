@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import ImageDropzone from '../components/image upload/ImageDropzone';
 import ImagePreview from '../components/image upload/ImagePreview';
@@ -11,8 +11,6 @@ const ImageUpload = () => {
   useAuth();
   const navigate = useNavigate();
   const [files, setFiles] = useState([]);
-  const [response, setResponse] = useState(null);
-  const [error, setError] = useState(null);
   const { groupId } = useParams();
   const [loading, setLoading] = useState(false);
 
@@ -24,33 +22,18 @@ const ImageUpload = () => {
     });
 
     try {
-      const res = await uploadImagesToGroup(formData, groupId);
-      setResponse(res);
-      setError(null);
-    } catch (error) {
-      console.log(error);
-      setError(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (response?.status === 'success') {
+      await uploadImagesToGroup(formData, groupId);
       showSuccessToast('Images have been successfully uploaded in the group');
-    }
-    setFiles([]);
-  }, [response]);
-
-  useEffect(() => {
-    if (error) {
+    } catch (error) {
       showErrorToast(
         error.message ||
           'Image cannot be uploaded in the group for unknown reasons, please try again'
       );
+    } finally {
+      setLoading(false);
+      setFiles([]);
     }
-    setFiles([]);
-  }, [error]);
+  };
 
   if (loading) return <Spinner />;
 

@@ -11,6 +11,7 @@ import ImageUpload from '../pages/ImageUpload';
 import ForgotPassword from '../pages/forgotPassword';
 import ResetPassword from '../pages/resetPassword';
 import DeleteImages from '../pages/DeleteImages';
+import NotFound from '../pages/NotFound';
 
 const appRouter = createBrowserRouter([
   {
@@ -60,6 +61,10 @@ const appRouter = createBrowserRouter([
       {
         path: '/user',
         element: <User />,
+      },
+      {
+        path: '*',
+        element: <NotFound />,
       },
     ],
   },

@@ -4,21 +4,19 @@ const IMAGE_API_URL = `${import.meta.env.VITE_API_URL}/group`;
 
 export const uploadImagesToGroup = async (imageData, groupId) => {
   try {
-    const response = await await axios.post(
+    const response = await axios.post(
       `${IMAGE_API_URL}/${groupId}/image`,
       imageData,
       {
         withCredentials: true,
         headers: { 'Content-Type': 'multipart/form-data' },
+        timeout: 30000,
       }
     );
     return response.data;
   } catch (error) {
-    console.log(error);
-    if (error.response) {
-      throw new Error(
-        error.response.data.message || 'Cannot fetch group data from the server'
-      );
+    if (error.response && error.response.data) {
+      throw new Error(error.response.data.message || 'Error uploading images');
     } else if (error.request) {
       throw new Error('Unable to reach the server. Please try again.');
     } else {

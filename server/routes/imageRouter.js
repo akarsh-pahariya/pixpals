@@ -13,14 +13,13 @@ const {
 } = require('../middlewares/groupAuthMiddleware');
 
 router
-  .post('/', protect, requireGroupMembership, (req, res, next) => {
-    upload.array('images', 10)(req, res, (err) => {
-      if (err) {
-        return next(err);
-      }
-      handleImageUpload(req, res, next);
-    });
-  })
+  .post(
+    '/',
+    protect,
+    requireGroupMembership,
+    upload.array('images'),
+    handleImageUpload
+  )
   .get('/', protect, requireGroupMembership, getGroupImages)
   .get('/user', protect, requireGroupMembership, getImagesPostedByUser)
   .post(

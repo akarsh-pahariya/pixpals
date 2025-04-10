@@ -23,7 +23,6 @@ const requireGroupMembership = async (req, res, next) => {
     }
 
     req.groupMembership = isMember;
-
     next();
   } catch (error) {
     next(new AppError('Error verifying group membership', 500));
