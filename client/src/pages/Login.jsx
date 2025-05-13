@@ -45,7 +45,7 @@ const Login = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };
 
-  if (loading) <Spinner />;
+  if (loading) return <Spinner />;
 
   return (
     <div className="py-15 flex items-center justify-center bg-[#0C0C0C] p-4">
