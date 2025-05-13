@@ -1,10 +1,10 @@
+const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
 const { v4: uuidv4 } = require('uuid');
 const AppError = require('../utils/appError');
 const { uploadGroupImage, deleteImages } = require('../utils/cloudinary');
 const Image = require('../models/ImageModel');
-const { log } = require('console');
 
 const handleImageUpload = async (req, res, next) => {
   try {
@@ -15,6 +15,9 @@ const handleImageUpload = async (req, res, next) => {
       return next(new AppError('No images uploaded', 400));
     }
 
+    const uploadDir = path.join(__dirname, '../public/temp/group_uploads');
+    await fs.promises.mkdir(uploadDir, { recursive: true });
+
     const processedImages = await Promise.all(
       req.files.map(async (file) => {
         if (!file.buffer) {
@@ -22,11 +25,7 @@ const handleImageUpload = async (req, res, next) => {
         }
 
         const uniqueName = `${Date.now()}-${uuidv4()}.jpeg`;
-        const outputPath = path.join(
-          __dirname,
-          '../public/temp/group_uploads',
-          uniqueName
-        );
+        const outputPath = path.join(uploadDir, uniqueName);
 
         await sharp(file.buffer)
           .rotate()
